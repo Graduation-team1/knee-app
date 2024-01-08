@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
 
-
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -28,7 +27,8 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       body: SafeArea(
         child: Container(
-          width: double.infinity,height: double.infinity,
+          width: double.infinity,
+          height: double.infinity,
           decoration: BoxDecoration(
             color: Color(0xFF06607B),
           ),
@@ -37,53 +37,54 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Center(
               child: Form(
                 key: _formKey,
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        _buildInputField('User Name', _userNameController, textCapitalization: TextCapitalization.words),
-                        SizedBox(height: 40),
-                        _buildInputField('Email', _emailController, keyboardType: TextInputType.emailAddress),
-                        SizedBox(height: 40),
-                        _buildPasswordField(),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () => _handleSignUp(context),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFF0F8FF),
-                            onPrimary: Color(0xFF435C59),
-                            minimumSize: Size(double.infinity, 50),
-                          ),
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(fontSize: 20),
-                          ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      _buildInputField('User Name', _userNameController,
+                          textCapitalization: TextCapitalization.words),
+                      SizedBox(height: 40),
+                      _buildInputField('Email', _emailController,
+                          keyboardType: TextInputType.emailAddress),
+                      SizedBox(height: 40),
+                      _buildPasswordField(),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () => _handleSignUp(context),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFF0F8FF),
+                          onPrimary: Color(0xFF435C59),
+                          minimumSize: Size(double.infinity, 50),
                         ),
-                        SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: RichText(
-                              text: TextSpan(
-                                text: 'Already have an account? ',
-                                style: TextStyle(fontSize: 16, color: Color(0xFF314441)),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Login',
-                                    style: TextStyle(color: Color(0xFFF0F8FF)),
-                                  ),
-                                ],
-                              ),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SignInPage()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Already have an account? ',
+                              style: TextStyle(fontSize: 16, color: Color(0xFF314441)),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Login',
+                                  style: TextStyle(color: Color(0xFFF0F8FF)),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

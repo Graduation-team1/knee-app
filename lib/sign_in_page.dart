@@ -33,57 +33,57 @@ class _SignInPageState extends State<SignInPage> {
             child: Center(
               child: Form(
                 key: _formKey,
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _buildInputField('Email', _emailController),
-                        SizedBox(height: 40),
-                        _buildPasswordField(),
-                        SizedBox(height: 40),
-                        ElevatedButton(
-                          onPressed: () => _handleSignIn(context),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFF0F8FF),
-                            onPrimary: Color(0xFF435C59),
-                            minimumSize: Size(double.infinity, 50),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _buildInputField('Email', _emailController),
+                    SizedBox(height: 40),
+                    _buildPasswordField(),
+                    SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () => _handleSignIn(context),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFF0F8FF),
+                        onPrimary: Color(0xFF435C59),
+                        minimumSize: Size(double.infinity, 50),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontSize: 20,
                           ),
                         ),
-                        SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Center(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Don\'t have an account? ',
-                                  style: TextStyle(fontSize: 16, color: Color(0xFF314441)),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Sign Up',
-                                      style: TextStyle(color: Color(0xFFF0F8FF)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Don\'t have an account? ',
+                              style:
+                              TextStyle(fontSize: 16, color: Color(0xFF314441)),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Sign Up',
+                                  style: TextStyle(color: Color(0xFFF0F8FF)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -93,7 +93,8 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildInputField(String labelText, TextEditingController controller, {bool obscureText = false}) {
+  Widget _buildInputField(String labelText, TextEditingController controller,
+      {bool obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
