@@ -91,14 +91,13 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 200, // Adjust the width as needed
-      height: 160, // Adjust the height as needed
+      height: 180, // Adjust the height as needed
       child: Stack(
         alignment: Alignment.center,
         children: [
           CircularProgressIndicator(
             value: percentage / 100,
-            strokeWidth: 15, // Adjust the strokeWidth for a thicker circle
-            strokeAlign: 10.0,
+            strokeWidth: 10, // Adjust the strokeWidth for a thicker circle
             backgroundColor: Color(0x99F0F8FF),
             valueColor: AlwaysStoppedAnimation<Color>(Color(0xF5034759)),
           ),
@@ -111,5 +110,6 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
     );
   }
 }
+
 
 

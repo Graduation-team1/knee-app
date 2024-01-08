@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: "Knee Osteoarthritis App",
       theme: ThemeData(brightness: Brightness.dark,),
       debugShowCheckedModeBanner: false,
-      home: XRaysPage(), // Use Chat widget as the home
+      home: SignInPage(), // Use Chat widget as the home
     );
   }
 }
