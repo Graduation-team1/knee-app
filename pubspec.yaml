@@ -33,6 +33,7 @@ dependencies:
   dialog_flowtter: ^0.3.3
   image_picker: ^1.0.5
   flutter_rating_bar: ^4.0.1
+  lottie: ^2.7.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -65,6 +66,7 @@ flutter:
   assets:
       - assets/
       - assets/Moderate (3).png
+      - assets/animation.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -98,6 +98,7 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
           CircularProgressIndicator(
             value: percentage / 100,
             strokeWidth: 10, // Adjust the strokeWidth for a thicker circle
+            strokeAlign: 10.0,
             backgroundColor: Color(0x99F0F8FF),
             valueColor: AlwaysStoppedAnimation<Color>(Color(0xF5034759)),
           ),
