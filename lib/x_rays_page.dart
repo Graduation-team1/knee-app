@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:knee_app/sign_in_page.dart';
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -31,18 +33,18 @@ class _XRaysPageState extends State<XRaysPage> {
               // Display the chosen image if available, otherwise display the default photo
               imagePath != null
                   ? Image.file(
-                File(imagePath!),
-                height: 200,
-                width: 200,
-              )
+                      File(imagePath!),
+                      height: 200,
+                      width: 200,
+                    )
                   : Image.asset(
-                'assets/Moderate (3).png',
-                height: 200,
-                width: 200,
-              ),
+                      'assets/Moderate (3).png',
+                      height: 200,
+                      width: 200,
+                    ),
               SizedBox(height: 20),
               IconButton(
-                icon: Icon(Icons.image , color: Color(0xFFF0F8FF)),
+                icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
                 onPressed: () async {
                   String? chosenImagePath = await getImagePath();
                   if (chosenImagePath != null) {
@@ -57,10 +59,9 @@ class _XRaysPageState extends State<XRaysPage> {
               // Display the machine response if available
               machineResponse != null
                   ? Text(
-                'Machine Response: $machineResponse',
-                style: TextStyle(color: Color(0xFFF0F8FF),
-                    fontSize: 20),
-              )
+                      'Machine Response: $machineResponse',
+                      style: TextStyle(color: Color(0xFFF0F8FF), fontSize: 20),
+                    )
                   : Container(),
             ],
           ),
@@ -76,7 +77,8 @@ class _XRaysPageState extends State<XRaysPage> {
   }
 
   Future<void> uploadPhoto(String imagePath) async {
-    final apiUrl = 'http://192.168.1.5:5000/predictApi'; // Replace with your actual API endpoint
+    final apiUrl =
+        'http://192.168.1.5:5000/predictApi'; // Replace with your actual API endpoint
 
     // Prepare the image file
     File imageFile = File(imagePath);

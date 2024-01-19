@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
@@ -65,15 +66,18 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SignInPage()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignInPage()));
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: RichText(
                             text: TextSpan(
                               text: 'Already have an account? ',
-                              style: TextStyle(fontSize: 16, color: Color(0xFF314441)),
+                              style: TextStyle(
+                                  fontSize: 16, color: Color(0xFF314441)),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: 'Login',
@@ -97,8 +101,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildInputField(String labelText, TextEditingController controller,
       {bool obscureText = false,
-        TextCapitalization? textCapitalization,
-        TextInputType? keyboardType}) {
+      TextCapitalization? textCapitalization,
+      TextInputType? keyboardType}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -112,10 +116,12 @@ class _SignUpPageState extends State<SignUpPage> {
           style: TextStyle(color: Color(0xFFF0F8FF)),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -148,10 +154,12 @@ class _SignUpPageState extends State<SignUpPage> {
           style: TextStyle(color: Color(0xFFF0F8FF)),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -179,11 +187,63 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _handleSignUp(BuildContext context) {
+  void _handleSignUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Add your sign-up logic here
-      // Navigate to the next screen on success
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => XRaysPage()));
+      {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Theme(
+              data: ThemeData(
+                // Customize the colors as needed
+                primaryColor: Color(
+                    0xFF06607B), // Change the color of the title and button text
+                backgroundColor: Color(
+                    0xFFF0F8FF), // Change the color of the alert background
+                textTheme: TextTheme(
+                    // bodyText1: TextStyle(color: Colors.red), // Change the color of the content text
+                    ),
+              ),
+              child: AlertDialog(
+                title: Text('Sign Up Successful'),
+                content: Text('You have successfully signed up!'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      // Close the dialog and navigate to the XRaysPage
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => XRaysPage()),
+                      );
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+
+        try {
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+          FirebaseAuth.instance.currentUser!.sendEmailVerification();
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => XRaysPage()));
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            print('The password provided is too weak.');
+          } else if (e.code == 'email-already-in-use') {
+            print('The account already exists for that email.');
+          }
+        } catch (e) {
+          print(e);
+        }
+      }
     }
   }
 }

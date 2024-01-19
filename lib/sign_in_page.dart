@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:knee_app/copy.dart';
 import 'package:knee_app/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -71,8 +73,8 @@ class _SignInPageState extends State<SignInPage> {
                             child: RichText(
                               text: TextSpan(
                                 text: 'Don\'t have an account? ',
-                                style:
-                                TextStyle(fontSize: 16, color: Color(0xFF314441)),
+                                style: TextStyle(
+                                    fontSize: 16, color: Color(0xFF314441)),
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'Sign Up',
@@ -110,10 +112,12 @@ class _SignInPageState extends State<SignInPage> {
           style: TextStyle(color: Color(0xFFF0F8FF)),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -144,10 +148,12 @@ class _SignInPageState extends State<SignInPage> {
           style: TextStyle(color: Color(0xFFF0F8FF)),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+              borderSide: BorderSide(
+                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -175,10 +181,55 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _handleSignIn(BuildContext context) {
+  void _handleSignIn(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      // Add your sign-in logic here
-      // Navigate to the next screen on success
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        Navigator.of(context).pushReplacementNamed('HomePage');
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+
+        if (e.code == 'user-not-found') {
+          errorMessage = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          errorMessage = 'Wrong password provided for that user.';
+        } else {
+          errorMessage =
+              'An unexpected error occurred. Please try again later.';
+        }
+
+        // Display the error message in a dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Theme(
+              data: ThemeData(
+                // Customize the colors as needed
+                primaryColor: Color(
+                    0xFF06607B), // Change the color of the title and button text
+                backgroundColor: Color(
+                    0xFFF0F8FF), // Change the color of the alert background
+                textTheme: TextTheme(),
+              ),
+              child: AlertDialog(
+                title: Text('Sign In Failed'),
+                content: Text(errorMessage),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
     }
   }
 }
