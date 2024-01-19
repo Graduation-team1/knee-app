@@ -54,7 +54,7 @@ class _SignInPageState extends State<SignInPage> {
                           child: Text(
                             'Sign In',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20, color: Color(0xFF06607B)
                             ),
                           ),
                         ),
@@ -208,21 +208,21 @@ class _SignInPageState extends State<SignInPage> {
             return Theme(
               data: ThemeData(
                 // Customize the colors as needed
-                primaryColor: Color(
-                    0xFF06607B), // Change the color of the title and button text
-                backgroundColor: Color(
-                    0xFFF0F8FF), // Change the color of the alert background
+                primaryColor: Color(0xFF06607B), // Change the color of the title and button text
+                backgroundColor: Color(0xFFF0F8FF), // Change the color of the alert background
                 textTheme: TextTheme(),
               ),
               child: AlertDialog(
-                title: Text('Sign In Failed'),
-                content: Text(errorMessage),
+                title: Text('Sign In Failed',
+                style: TextStyle(color: Color(0xFF06607B)),),
+                content: Text(errorMessage,style: TextStyle(color: Color(
+                    0xFF054E65)),),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Close the dialog
                     },
-                    child: Text('OK'),
+                    child: Text('OK',style: TextStyle(color: Color(0xFF06607B)),),
                   ),
                 ],
               ),

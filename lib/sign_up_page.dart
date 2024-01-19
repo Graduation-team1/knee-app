@@ -60,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         child: Text(
                           'Sign Up',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 20, color: Color(0xFF06607B)),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -197,17 +197,18 @@ class _SignUpPageState extends State<SignUpPage> {
             return Theme(
               data: ThemeData(
                 // Customize the colors as needed
-                primaryColor: Color(
-                    0xFF06607B), // Change the color of the title and button text
-                backgroundColor: Color(
-                    0xFFF0F8FF), // Change the color of the alert background
+                primaryColor: Color(0xFF06607B), // Change the color of the title and button text
+                backgroundColor: Color(0xFFF0F8FF), // Change the color of the alert background
                 textTheme: TextTheme(
                     // bodyText1: TextStyle(color: Colors.red), // Change the color of the content text
                     ),
               ),
               child: AlertDialog(
-                title: Text('Sign Up Successful'),
-                content: Text('You have successfully signed up!'),
+                title: Text('Sign Up Successful',
+                style: TextStyle(color: Color(0xFF06607B)),),
+
+                content: Text('You have successfully signed up!',style: TextStyle(color: Color(
+                    0xFF054E65)),),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -218,7 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         MaterialPageRoute(builder: (context) => XRaysPage()),
                       );
                     },
-                    child: Text('OK'),
+                    child: Text('OK',style: TextStyle(color: Color(0xFF06607B)),),
                   ),
                 ],
               ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1056750729374",
+    "project_id": "knee-app-34a86",
+    "storage_bucket": "knee-app-34a86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056750729374:android:f4936e33e01590a5e7238f",
+        "android_client_info": {
+          "package_name": "com.example.knee_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpMe_rxQyEC2jtA1X8Hvyi8qtfijXKg8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
