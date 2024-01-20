@@ -60,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         child: Text(
                           'Sign Up',
-                          style: TextStyle(fontSize: 20, color: Color(0xFF06607B)),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -101,8 +101,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildInputField(String labelText, TextEditingController controller,
       {bool obscureText = false,
-      TextCapitalization? textCapitalization,
-      TextInputType? keyboardType}) {
+        TextCapitalization? textCapitalization,
+        TextInputType? keyboardType}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -189,62 +189,85 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _handleSignUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      // Add your sign-up logic here
-      {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
+        // Show a dialog for 2 seconds
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return Theme(
-              data: ThemeData(
-                // Customize the colors as needed
-                primaryColor: Color(0xFF06607B), // Change the color of the title and button text
-                backgroundColor: Color(0xFFF0F8FF), // Change the color of the alert background
-                textTheme: TextTheme(
-                    // bodyText1: TextStyle(color: Colors.red), // Change the color of the content text
-                    ),
+            return AlertDialog(
+              backgroundColor: Color(0xFFF0F8FF),
+              title: Text(
+                'Sign Up Successful',
+                style: TextStyle(color: Color(0xFF06607B)),
               ),
-              child: AlertDialog(
-                title: Text('Sign Up Successful',
-                style: TextStyle(color: Color(0xFF06607B)),),
-
-                content: Text('You have successfully signed up!',style: TextStyle(color: Color(
-                    0xFF054E65)),),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      // Close the dialog and navigate to the XRaysPage
-                      Navigator.of(context).pop();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => XRaysPage()),
-                      );
-                    },
-                    child: Text('OK',style: TextStyle(color: Color(0xFF06607B)),),
-                  ),
-                ],
-              ),
+              content: Text('You have successfully signed up!',
+                  style: TextStyle(color: Color(0xFF054E65))),
             );
           },
         );
 
-        try {
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-          FirebaseAuth.instance.currentUser!.sendEmailVerification();
+        // Delay navigation for 2 seconds
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.of(context).pop(); // Close the dialog
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => XRaysPage()));
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            print('The password provided is too weak.');
-          } else if (e.code == 'email-already-in-use') {
-            print('The account already exists for that email.');
-          }
-        } catch (e) {
-          print(e);
+            context,
+            MaterialPageRoute(builder: (context) => XRaysPage()),
+          );
+        });
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+          _showDialog(context, 'Try again',
+              'The account already exists for that email.');
+        } else if (e.code == 'invalid-email') {
+          _showDialog(
+              context, 'Invalid Email', 'Please enter a valid email address.');
         }
+      } catch (e) {
+        print(e);
       }
     }
+  }
+
+  void _showDialog(BuildContext context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              color: Color(0xFF06607B),
+            ), // Change title text color
+          ),
+          content: Text(
+            content,
+            style: TextStyle(
+                color: Color(0xFF054E65)), // Change content text color
+          ),
+          backgroundColor: Color(0xFFF0F8FF),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK',
+                  style: TextStyle(
+                    color: Color(0xFF06607B),
+                  )), // Change button text color
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -47,14 +47,14 @@ class _SignInPageState extends State<SignInPage> {
                         onPressed: () => _handleSignIn(context),
                         style: ElevatedButton.styleFrom(
                           primary: Color(0xFFF0F8FF),
-                          onPrimary: Color(0xFF435C59),
+                          onPrimary: Color(0xFF06607B),
                           minimumSize: Size(double.infinity, 50),
                         ),
                         child: Center(
                           child: Text(
                             'Sign In',
                             style: TextStyle(
-                              fontSize: 20, color: Color(0xFF06607B)
+                              fontSize: 20,
                             ),
                           ),
                         ),
