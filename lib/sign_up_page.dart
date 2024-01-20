@@ -224,6 +224,8 @@ class _SignUpPageState extends State<SignUpPage> {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
+          _showDialog(
+              context, 'Weak Password', 'Please enter a Strong Password.');
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
           _showDialog(context, 'Try again',
