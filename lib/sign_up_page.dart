@@ -216,15 +216,24 @@ class _SignUpPageState extends State<SignUpPage> {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
-          _showDialog(
-              context, 'Weak Password', 'Please enter a Strong Password.');
+          Fluttertoast.showToast(
+            msg: 'Weak Password Please enter a Strong Password.',
+            backgroundColor: Color(0xFFF0F8FF),
+            textColor: Color(0xFF054E65),
+          );
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
-          _showDialog(context, 'Try again',
-              'The account already exists for that email.');
+          Fluttertoast.showToast(
+            msg: 'The account already exists for that email.',
+            backgroundColor: Color(0xFFF0F8FF),
+            textColor: Color(0xFF054E65),
+          );
         } else if (e.code == 'invalid-email') {
-          _showDialog(
-              context, 'Invalid Email', 'Please enter a valid email address.');
+          Fluttertoast.showToast(
+            msg: 'Invalid Email Please enter a valid email address.',
+            backgroundColor: Color(0xFFF0F8FF),
+            textColor: Color(0xFF054E65),
+          );
         }
       } catch (e) {
         print(e);
