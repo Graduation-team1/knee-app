@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
 
@@ -198,20 +199,11 @@ class _SignUpPageState extends State<SignUpPage> {
         FirebaseAuth.instance.currentUser!.sendEmailVerification();
 
         // Show a dialog for 2 seconds
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xFFF0F8FF),
-              title: Text(
-                'Sign Up Successful',
-                style: TextStyle(color: Color(0xFF06607B)),
-              ),
-              content: Text('You have successfully signed up!',
-                  style: TextStyle(color: Color(0xFF054E65))),
+        Fluttertoast.showToast(
+            msg: 'You have successfully signed up!',
+            backgroundColor: Color(0xFFF0F8FF),
+            textColor: Color(0xFF054E65),
             );
-          },
-        );
 
         // Delay navigation for 2 seconds
         Future.delayed(Duration(seconds: 2), () {
