@@ -1,9 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:knee_app/sign_in_page.dart';
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -12,7 +11,8 @@ class XRaysPage extends StatefulWidget {
 
 class _XRaysPageState extends State<XRaysPage> {
   String? imagePath;
-  String? machineResponse; // Variable to hold the response from the machine
+  String? machineResponse;
+  TextEditingController _userInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,47 +25,96 @@ class _XRaysPageState extends State<XRaysPage> {
         backgroundColor: Color(0xFF06607B),
       ),
       body: Container(
-        color: Color(0xFF06607B), // Background color of the body
+        color: Color(0xFF06607B),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Display the chosen image if available, otherwise display the default photo
               imagePath != null
                   ? Image.file(
-                      File(imagePath!),
-                      height: 200,
-                      width: 200,
-                    )
+                File(imagePath!),
+                height: 200,
+                width: 200,
+              )
                   : Image.asset(
-                      'assets/Moderate (3).png',
-                      height: 200,
-                      width: 200,
-                    ),
-              SizedBox(height: 20),
-              IconButton(
-                icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
-                onPressed: () async {
-                  String? chosenImagePath = await getImagePath();
-                  if (chosenImagePath != null) {
-                    setState(() {
-                      imagePath = chosenImagePath;
-                    });
-                    await uploadPhoto(chosenImagePath);
-                  }
-                },
+                'assets/bonee.png',
+                height: 200,
+                width: 200,
               ),
               SizedBox(height: 20),
-              // Display the machine response if available
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
+                    onPressed: () async {
+                      String? chosenImagePath = await getImagePath();
+                      if (chosenImagePath != null) {
+                        setState(() {
+                          imagePath = chosenImagePath;
+                        });
+                      }
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    width: 200,
+                    child: TextFormField(
+                      controller: _userInputController,
+                      decoration: InputDecoration(
+                        hintText: 'Type a name...',
+                        hintStyle: TextStyle(color: Color(0xFF06607B)),
+                        filled: true,
+                        fillColor: Color(0xFFF0F8FF),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFFF0F8FF)), // Color when not focused
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                          BorderSide(color: Color(0xFF06607B)), // Color when focused
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 16.0),
+                      ),
+                      cursorColor: Color(0xFF06607B), // Color of the cursor
+                      style: TextStyle(
+                        color: Color(0xFF06607B), // Color of the text
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               machineResponse != null
-                  ? Text(
-                      'Machine Response: $machineResponse',
-                      style: TextStyle(color: Color(0xFFF0F8FF), fontSize: 20),
-                    )
+                  ? Center(
+                child: Text(
+                  '${formatMachineResponse(machineResponse!)}',
+                  style: TextStyle(
+                    color: Color(0xFFF0F8FF),
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
                   : Container(),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (imagePath != null) {
+            uploadPhoto(imagePath!);
+          }
+        },
+        tooltip: 'Predict',
+        child: Icon(Icons.send,color:Color(0xFF06607B)),
+        backgroundColor: Color(0xFFF0F8FF),
       ),
     );
   }
@@ -77,40 +126,40 @@ class _XRaysPageState extends State<XRaysPage> {
   }
 
   Future<void> uploadPhoto(String imagePath) async {
-    final apiUrl =
-        'http://192.168.1.5:5000/predictApi'; // Replace with your actual API endpoint
+    final apiUrl = 'http://192.168.1.5:5000/predictApi';
 
-    // Prepare the image file
     File imageFile = File(imagePath);
     List<int> imageBytes = await imageFile.readAsBytes();
 
-    // Create a multipart request
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
     request.files.add(http.MultipartFile.fromBytes(
       'fileup',
       imageBytes,
-      filename: 'xray_image.jpg', // Provide a filename for the image
+      filename: 'xray_image.jpg',
     ));
 
     try {
-      // Send the request
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        // Parse and handle the response
         String responseBody = await response.stream.bytesToString();
-        // Update the UI or perform actions based on the response
         setState(() {
           machineResponse = responseBody;
         });
         print('API Response: $responseBody');
       } else {
-        // Handle errors or display appropriate messages
         print('Failed to upload image. Status Code: ${response.statusCode}');
       }
     } catch (error) {
-      // Handle network or other errors
       print('Error: $error');
     }
+  }
+
+  String formatMachineResponse(String response) {
+    Map<String, dynamic> parsedResponse = json.decode(response);
+    double confidence = parsedResponse['confidence'];
+    String result = parsedResponse['result'];
+
+    return ' Result: $result,\nConfidence: ${(confidence * 100).toStringAsFixed(2)}%';
   }
 }

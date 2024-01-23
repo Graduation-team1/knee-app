@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Use Chat widget as the home
+      home: XRaysPage(), // Use Chat widget as the home
     );
   }
 }
