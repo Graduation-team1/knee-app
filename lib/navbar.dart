@@ -1,5 +1,6 @@
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/sign_in_page.dart';
+import 'package:knee_app/user_model.dart';
 import 'package:knee_app/x_rays_page.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/radiology.dart';
@@ -7,6 +8,8 @@ import 'package:knee_app/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:provider/provider.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -21,14 +24,15 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserModel>(context);
     return Drawer(
       backgroundColor: Color(0xFFF0F8FF),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('rahma badar'),
-            accountEmail: const Text('rahma@gmail.com'),
+            accountName: Text(userModel.userName ?? ''),
+            accountEmail: Text(userModel.userEmail ?? ''),
             currentAccountPicture: GestureDetector(
               onTap: () async {
                 // Call function to handle image selection

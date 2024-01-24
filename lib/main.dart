@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/sign_in_page.dart';
+import 'package:knee_app/user_model.dart';
 import 'package:knee_app/x_rays_page.dart';
+import 'package:provider/provider.dart';
 import 'splash_screen.dart';
 import 'sign_up_page.dart';
 import 'home_page.dart';
@@ -28,14 +30,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {'HomePage': (context) => XRaysPage()},
-      title: "Knee Osteoarthritis App",
-      theme: ThemeData(
-        brightness: Brightness.dark,
+    return ChangeNotifierProvider(
+      create: (context) => UserModel(),
+      child: MaterialApp(
+        routes: {'HomePage': (context) => XRaysPage()},
+        title: "Knee Osteoarthritis App",
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
     );
   }
 }

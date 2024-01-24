@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:knee_app/sign_in_page.dart';
+import 'package:knee_app/user_model.dart';
 import 'package:knee_app/x_rays_page.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -197,6 +199,11 @@ class _SignUpPageState extends State<SignUpPage> {
         );
 
         FirebaseAuth.instance.currentUser!.sendEmailVerification();
+        // Set user information using Provider
+        Provider.of<UserModel>(context, listen: false).setUserInformation(
+          _userNameController.text,
+          _emailController.text,
+        );
 
         // Show a dialog for 2 seconds
         Fluttertoast.showToast(
