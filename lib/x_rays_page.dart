@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:knee_app/navbar.dart';
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _XRaysPageState extends State<XRaysPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
         title: Text(
           'X-Rays',
@@ -27,82 +29,85 @@ class _XRaysPageState extends State<XRaysPage> {
       body: Container(
         color: Color(0xFF06607B),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              imagePath != null
-                  ? Image.file(
-                File(imagePath!),
-                height: 200,
-                width: 200,
-              )
-                  : Image.asset(
-                'assets/bonee.png',
-                height: 200,
-                width: 200,
-              ),
-              SizedBox(height: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
-                    onPressed: () async {
-                      String? chosenImagePath = await getImagePath();
-                      if (chosenImagePath != null) {
-                        setState(() {
-                          imagePath = chosenImagePath;
-                        });
-                      }
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 200,
-                    child: TextFormField(
-                      controller: _userInputController,
-                      decoration: InputDecoration(
-                        hintText: 'Type a name...',
-                        hintStyle: TextStyle(color: Color(0xFF06607B)),
-                        filled: true,
-                        fillColor: Color(0xFFF0F8FF),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide:
-                          BorderSide(color: Color(0xFFF0F8FF)), // Color when not focused
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                imagePath != null
+                    ? Image.file(
+                  File(imagePath!),
+                  height: 200,
+                  width: 200,
+                )
+                    : Image.asset(
+                  'assets/bonee.png',
+                  height: 200,
+                  width: 200,
+                ),
+                SizedBox(height: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
+                      onPressed: () async {
+                        String? chosenImagePath = await getImagePath();
+                        if (chosenImagePath != null) {
+                          setState(() {
+                            imagePath = chosenImagePath;
+                          });
+                        }
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: 200,
+                      height: 50,
+                      child: TextFormField(
+                        controller: _userInputController,
+                        decoration: InputDecoration(
+                          hintText: 'Type a name...',
+                          hintStyle: TextStyle(color: Color(0xFF06607B)),
+                          filled: true,
+                          fillColor: Color(0xFFF0F8FF),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide:
+                            BorderSide(color: Color(0xFFF0F8FF)), // Color when not focused
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide:
+                            BorderSide(color: Color(0xFF06607B)), // Color when focused
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 16.0),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide:
-                          BorderSide(color: Color(0xFF06607B)), // Color when focused
+                        cursorColor: Color(0xFF06607B), // Color of the cursor
+                        style: TextStyle(
+                          color: Color(0xFF06607B), // Color of the text
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 16.0),
-                      ),
-                      cursorColor: Color(0xFF06607B), // Color of the cursor
-                      style: TextStyle(
-                        color: Color(0xFF06607B), // Color of the text
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              machineResponse != null
-                  ? Center(
-                child: Text(
-                  '${formatMachineResponse(machineResponse!)}',
-                  style: TextStyle(
-                    color: Color(0xFFF0F8FF),
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1,
-                  ),
-                  textAlign: TextAlign.center,
+                  ],
                 ),
-              )
-                  : Container(),
-            ],
+                SizedBox(height: 20),
+                machineResponse != null
+                    ? Center(
+                  child: Text(
+                    '${formatMachineResponse(machineResponse!)}',
+                    style: TextStyle(
+                      color: Color(0xFFF0F8FF),
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+                    : Container(),
+              ],
+            ),
           ),
         ),
       ),

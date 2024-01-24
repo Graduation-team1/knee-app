@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'navbar.dart';
+
 class RadiologyPage extends StatefulWidget {
   @override
   _RadiologyPageState createState() => _RadiologyPageState();
@@ -34,6 +36,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
         title: Text('Radiology'),
         backgroundColor: Color(0xFF06607B),

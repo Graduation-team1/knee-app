@@ -8,6 +8,7 @@ import 'sign_up_page.dart';
 import 'home_page.dart';
 import 'chat.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:knee_app/navbar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
-      home: XRaysPage(), // Use Chat widget as the home
+      home: SplashScreen(),
     );
   }
 }

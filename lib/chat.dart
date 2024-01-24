@@ -1,6 +1,7 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'Messages.dart';
+import 'navbar.dart';
 
 class Chat extends StatefulWidget {
   const Chat({super.key});
@@ -23,8 +24,9 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
-        title: Text("Ai Assistant",
+        title: Text("AI Assistant",
         style: TextStyle(color: Color(0xFFF0F8FF)),),
         backgroundColor: Color(0xFF06607B),
       ),

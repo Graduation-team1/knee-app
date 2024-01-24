@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Add a delay of 3 seconds before navigating to the sign-up page
+
     Future.delayed(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -33,11 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 Lottie.asset('assets/animation.json',
                 width: 200,
                 height: 200,
-                fit: BoxFit.fill,),
+                fit: BoxFit.fill,),SizedBox(height: 10,),
                 Text(
                   'Welcome to \nKnee Osteoarthritis \nDetection and Prediction.',
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 25, color: Color(0xFFF0F8FF)), // Set text color to F0F8FF
+                  style: TextStyle(fontSize: 28, color: Color(0xFFF0F8FF)), // Set text color to F0F8FF
                 ),
               ],
             ),
