@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:knee_app/navbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -72,13 +73,13 @@ class _XRaysPageState extends State<XRaysPage> {
                           fillColor: Color(0xFFF0F8FF),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            BorderSide(color: Color(0xFFF0F8FF)), // Color when not focused
+                            borderSide: BorderSide(
+                                color: Color(0xFFF0F8FF)), // Color when not focused
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            BorderSide(color: Color(0xFF06607B)), // Color when focused
+                            borderSide: BorderSide(
+                                color: Color(0xFF06607B)), // Color when focused
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 16.0, horizontal: 16.0),
@@ -112,13 +113,24 @@ class _XRaysPageState extends State<XRaysPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           if (imagePath != null) {
-            uploadPhoto(imagePath!);
+            String? response = await uploadPhoto(imagePath!);
+            if (response != null) {
+              // Store information locally
+              saveToHistory(
+                userInput: _userInputController.text,
+                imagePath: imagePath!,
+                machineResponse: response,
+              );
+              setState(() {
+                machineResponse = response;
+              });
+            }
           }
         },
         tooltip: 'Predict',
-        child: Icon(Icons.send,color:Color(0xFF06607B)),
+        child: Icon(Icons.send, color: Color(0xFF06607B)),
         backgroundColor: Color(0xFFF0F8FF),
       ),
     );
@@ -130,7 +142,7 @@ class _XRaysPageState extends State<XRaysPage> {
     return pickedFile?.path;
   }
 
-  Future<void> uploadPhoto(String imagePath) async {
+  Future<String?> uploadPhoto(String imagePath) async {
     final apiUrl = 'http://192.168.1.5:5000/predictApi';
 
     File imageFile = File(imagePath);
@@ -148,15 +160,15 @@ class _XRaysPageState extends State<XRaysPage> {
 
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
-        setState(() {
-          machineResponse = responseBody;
-        });
         print('API Response: $responseBody');
+        return responseBody;
       } else {
         print('Failed to upload image. Status Code: ${response.statusCode}');
+        return null;
       }
     } catch (error) {
       print('Error: $error');
+      return null;
     }
   }
 
@@ -166,5 +178,21 @@ class _XRaysPageState extends State<XRaysPage> {
     String result = parsedResponse['result'];
 
     return ' Result: $result,\nConfidence: ${(confidence * 100).toStringAsFixed(2)}%';
+  }
+
+  Future<void> saveToHistory({
+    required String userInput,
+    required String imagePath,
+    required String machineResponse,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> history = prefs.getStringList('history') ?? [];
+
+    // Save new entry to history
+    String entry = 'User Input: $userInput\nImage Path: $imagePath\nMachine Response: $machineResponse';
+    history.add(entry);
+
+    // Save updated history to SharedPreferences
+    prefs.setStringList('history', history);
   }
 }

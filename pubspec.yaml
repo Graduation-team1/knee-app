@@ -34,7 +34,7 @@ dependencies:
   dialog_flowtter: ^0.3.3
   image_picker: ^1.0.5
   flutter_rating_bar: ^4.0.1
-  lottie: ^2.7.0
+  lottie: ^3.0.0
 
 
 
@@ -78,6 +78,7 @@ flutter:
   assets:
       - assets/
       - assets/bonee.png
+      - assets/logo-no-background.png
       - assets/pro.png
       - assets/animation.json
   #   - images/a_dot_ham.jpeg

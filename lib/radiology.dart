@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-
-import 'navbar.dart';
+import 'package:knee_app/navbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RadiologyPage extends StatefulWidget {
   @override
@@ -8,29 +10,32 @@ class RadiologyPage extends StatefulWidget {
 }
 
 class _RadiologyPageState extends State<RadiologyPage> {
-  final List<String> _suggestions = [
-    'Brain MRI',
-    'Chest X-ray',
-    'Abdominal CT',
-    'Spine MRI',
-    'Bone Scan',
-    'Mammography',
-    'Ultrasound',
-    'PET Scan',
-    'Angiography',
-    'Fluoroscopy',
-    'BADR',
-    'HAMED',
-    'ABDULLAH',
-  ];
-
-  final TextEditingController _searchController = TextEditingController();
-  List<String> _filteredSuggestions = <String>[];
+  List<Map<String, String>> _history = [];
 
   @override
   void initState() {
-    _filteredSuggestions = _suggestions;
+    loadHistory();
     super.initState();
+  }
+
+  Future<void> loadHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _history = (prefs.getStringList('history') ?? []).map((entry) {
+        // Split the entry into lines
+        List<String> lines = entry.split('\n');
+        // Extract data from lines
+        String userInput = lines[0].substring('User Input: '.length);
+        String imagePath = lines[1].substring('Image Path: '.length);
+        String machineResponse = lines[2].substring('Machine Response: '.length);
+        // Return a map with data
+        return {
+          'userInput': userInput,
+          'imagePath': imagePath,
+          'machineResponse': machineResponse,
+        };
+      }).toList();
+    });
   }
 
   @override
@@ -54,7 +59,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('assets/Moderate (3).png'),
+                      image: AssetImage('assets/logo-no-background.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -62,7 +67,6 @@ class _RadiologyPageState extends State<RadiologyPage> {
                 SizedBox(width: 10),
                 Expanded(
                   child: TextField(
-                    controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Search',
                       prefixIcon: Icon(Icons.search),
@@ -71,12 +75,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                       ),
                     ),
                     onChanged: (String value) {
-                      setState(() {
-                        _filteredSuggestions = _suggestions
-                            .where((String suggestion) =>
-                            suggestion.toLowerCase().contains(value.toLowerCase()))
-                            .toList();
-                      });
+                      // Implement search logic here if needed
                     },
                   ),
                 ),
@@ -87,21 +86,44 @@ class _RadiologyPageState extends State<RadiologyPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: _filteredSuggestions.length,
+                itemCount: _history.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     color: Color(0xFFF0F8FF),
                     child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/Moderate (3).png'),
-                      ),
-                      title: Text(
-                        _filteredSuggestions[index],
-                        style: TextStyle(color: Color(0xFF06607B)),
-                      ),
-                      trailing: Text(
-                        'Report Result',
-                        style: TextStyle(color: Color(0xFF06607B)),
+                      title: Row(
+                        children: [
+                          Container(
+                            width: 65,
+                            height: 65,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: FileImage(File(_history[index]['imagePath']!)),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Name: ${_history[index]['userInput']}',
+                                style: TextStyle(color: Color(0xFF06607B)),
+                              ),
+                              // if (_history[index]['imagePath'] != null)
+                              //   CircleAvatar(
+                              //     backgroundImage: FileImage(File(_history[index]['imagePath']!)),
+                              //     radius: 30,
+                              //   ),
+                              Text(
+                                formatMachineResponse(_history[index]['machineResponse']!),
+                                style: TextStyle(color: Color(0xFF06607B)),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -112,5 +134,13 @@ class _RadiologyPageState extends State<RadiologyPage> {
         ],
       ),
     );
+  }
+
+  String formatMachineResponse(String response) {
+    Map<String, dynamic> parsedResponse = json.decode(response);
+    double confidence = parsedResponse['confidence'];
+    String result = parsedResponse['result'];
+
+    return 'Result: $result,\nConfidence: ${(confidence * 100).toStringAsFixed(2)}%';
   }
 }

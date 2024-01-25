@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:knee_app/copy.dart';
 import 'package:knee_app/sign_up_page.dart';
 
@@ -192,42 +193,20 @@ class _SignInPageState extends State<SignInPage> {
       } on FirebaseAuthException catch (e) {
         String errorMessage;
 
-        if (e.code == 'user-not-found') {
-          errorMessage = 'No user found for that email.';
-        } else if (e.code == 'wrong-password') {
-          errorMessage = 'Wrong password provided for that user.';
-        } else {
-          errorMessage =
-              'An unexpected error occurred. Please try again later.';
-        }
+        // if (e.code == 'user-not-found') {
+        //   errorMessage = 'No user found for that email.';
+        // } else if (e.code == 'wrong-password') {
+        //   errorMessage = 'Wrong password provided for that user.';
+        // } else {
+        //   errorMessage =
+        //       'An unexpected error occurred. Please try again later.';
+        // }
 
         // Display the error message in a dialog
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Theme(
-              data: ThemeData(
-                // Customize the colors as needed
-                primaryColor: Color(0xFF06607B), // Change the color of the title and button text
-                backgroundColor: Color(0xFFF0F8FF), // Change the color of the alert background
-                textTheme: TextTheme(),
-              ),
-              child: AlertDialog(
-                title: Text('Sign In Failed',
-                style: TextStyle(color: Color(0xFF06607B)),),
-                content: Text(errorMessage,style: TextStyle(color: Color(
-                    0xFF054E65)),),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('OK',style: TextStyle(color: Color(0xFF06607B)),),
-                  ),
-                ],
-              ),
-            );
-          },
+        Fluttertoast.showToast(
+          msg: 'Incrrect username or password.',
+          backgroundColor: Color(0xFFF0F8FF),
+          textColor: Color(0xFF054E65),
         );
       }
     }

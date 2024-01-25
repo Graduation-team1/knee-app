@@ -213,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
 
         // Delay navigation for 2 seconds
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 1), () {
           Navigator.of(context).pop(); // Close the dialog
           Navigator.pushReplacement(
             context,
