@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:knee_app/navbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:knee_app/database.dart'; // Import your database helper
 
 class RadiologyPage extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class RadiologyPage extends StatefulWidget {
 }
 
 class _RadiologyPageState extends State<RadiologyPage> {
-  List<Map<String, String>> _history = [];
+  List<Map<String, dynamic>> _history = [];
 
   @override
   void initState() {
@@ -19,22 +19,10 @@ class _RadiologyPageState extends State<RadiologyPage> {
   }
 
   Future<void> loadHistory() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    DatabaseHelper helper = DatabaseHelper.instance;
+    List<Map<String, dynamic>> history = await helper.queryAllRows();
     setState(() {
-      _history = (prefs.getStringList('history') ?? []).map((entry) {
-        // Split the entry into lines
-        List<String> lines = entry.split('\n');
-        // Extract data from lines
-        String userInput = lines[0].substring('User Input: '.length);
-        String imagePath = lines[1].substring('Image Path: '.length);
-        String machineResponse = lines[2].substring('Machine Response: '.length);
-        // Return a map with data
-        return {
-          'userInput': userInput,
-          'imagePath': imagePath,
-          'machineResponse': machineResponse,
-        };
-      }).toList();
+      _history = history;
     });
   }
 
@@ -99,7 +87,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: FileImage(File(_history[index]['imagePath']!)),
+                                image: FileImage(File(_history[index]['imagePath'])),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -112,13 +100,8 @@ class _RadiologyPageState extends State<RadiologyPage> {
                                 'Name: ${_history[index]['userInput']}',
                                 style: TextStyle(color: Color(0xFF06607B)),
                               ),
-                              // if (_history[index]['imagePath'] != null)
-                              //   CircleAvatar(
-                              //     backgroundImage: FileImage(File(_history[index]['imagePath']!)),
-                              //     radius: 30,
-                              //   ),
                               Text(
-                                formatMachineResponse(_history[index]['machineResponse']!),
+                                formatMachineResponse(_history[index]['machineResponse']),
                                 style: TextStyle(color: Color(0xFF06607B)),
                               ),
                             ],

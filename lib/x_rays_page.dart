@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:knee_app/navbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:knee_app/database.dart'; // Import your database helper
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -185,14 +185,11 @@ class _XRaysPageState extends State<XRaysPage> {
     required String imagePath,
     required String machineResponse,
   }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> history = prefs.getStringList('history') ?? [];
-
-    // Save new entry to history
-    String entry = 'User Input: $userInput\nImage Path: $imagePath\nMachine Response: $machineResponse';
-    history.add(entry);
-
-    // Save updated history to SharedPreferences
-    prefs.setStringList('history', history);
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.insertHistory(
+      userInput: userInput,
+      imagePath: imagePath,
+      machineResponse: machineResponse,
+    );
   }
 }

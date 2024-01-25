@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: XRaysPage(),
       ),
     );
   }
