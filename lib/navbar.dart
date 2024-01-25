@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/user_model.dart';
+import 'package:knee_app/utils.dart';
 import 'package:knee_app/x_rays_page.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/radiology.dart';
@@ -8,8 +11,8 @@ import 'package:knee_app/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -20,11 +23,26 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  File? _selectedImage;
+  Uint8List? _image;
+
+  @override
+  void initState() {
+    super.initState();
+    loadImage();
+  }
+
+  Future<void> loadImage() async {
+    _image ??= await loadProfileImage();
+    // Ensure the widget is rebuilt after the image is loaded
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final userModel = Provider.of<UserModel>(context);
+
     return Drawer(
       backgroundColor: Color(0xFFF0F8FF),
       child: ListView(
@@ -33,26 +51,20 @@ class _NavBarState extends State<NavBar> {
           UserAccountsDrawerHeader(
             accountName: Text(userModel.userName ?? ''),
             accountEmail: Text(userModel.userEmail ?? ''),
-            currentAccountPicture: GestureDetector(
-              onTap: () async {
-                // Call function to handle image selection
-                File? image = await _pickImage();
-                if (image != null) {
-                  setState(() {
-                    _selectedImage = image;
-                  });
-                }
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: _selectedImage != null
-                      ? Image.file(
-                    _selectedImage!,
-                  )
-                      : Image.asset('assets/pro.png'),
+            currentAccountPicture: Stack(
+              children: [
+                _image != null
+                    ? CircleAvatar(radius: 64, backgroundImage: MemoryImage(_image!))
+                    : const CircleAvatar(radius: 64, backgroundImage: AssetImage('assets/pro.png')),
+                Positioned(
+                  child: IconButton(
+                    onPressed: selectImage,
+                    icon: Icon(Icons.add_a_photo, color: Color(0xFFF0F8FF),size: 19,),
+                  ),
+                  bottom: -15,
+                  left: 33,
                 ),
-              ),
+              ],
             ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -88,16 +100,6 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
-  Future<File?> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      return File(pickedFile.path);
-    }
-
-    return null;
-  }
   void _showSignOutDialog() {
     showDialog(
       context: context,
@@ -125,5 +127,42 @@ class _NavBarState extends State<NavBar> {
       },
     );
   }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image=img;
+    });
+  }
+
+  void saveProfileImage(Uint8List image) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String base64Image = base64Encode(image);
+    prefs.setString('profile_image', base64Image);
+  }
+
+
+
+  @override
+  void dispose() {
+    if (_image != null) {
+      saveProfileImage(_image!);
+    }
+    super.dispose();
+  }
 }
+
+Future<Uint8List?> loadProfileImage() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? base64Image = prefs.getString('profile_image');
+  if (base64Image != null) {
+    return base64Decode(base64Image);
+  }
+  return null;
+}
+
+
+
+
+
 
