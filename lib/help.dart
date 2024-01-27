@@ -1,28 +1,140 @@
 import 'package:flutter/material.dart';
 
 import 'navbar.dart';
+
 class Help extends StatelessWidget {
   const Help({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        drawer: NavBar(),
-      appBar: AppBar(backgroundColor: Color(0xFF06607B),
-        title: Text('Help'),elevation: 0,
+    return Scaffold(
+      drawer: NavBar(),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF06607B),
+        title: Text('Help'),
+        elevation: 0,
       ),
       backgroundColor: Color(0xFF06607B),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Help Page',
-              style: TextStyle(fontSize: 20),
-            ),
-            // Add your home page content here
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: <Widget>[
+          Text(
+            'Welcome to the Knee Osteoarthritis App Help Center!',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'How to use the app:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+
+
+          SizedBox(height: 8),
+          Text(
+            '1- Image Upload:',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '  - Select an existing X-ray image from your gallery if needed.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '  - Click on the image to view and confirm before proceeding.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '2- Enter Patient Information:',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '  - Type the patient\'s name in the provided field for better record-keeping.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '  - This step is crucial for tracking and analysis.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '3- Prediction:',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '  - Click on the "Predict" button.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '  - The app will analyze the X-ray and provide predictions related to knee osteoarthritis.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '4- View Results:',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '  - Once the prediction is complete, results will be displayed on the same screen.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '  - Results include the predicted condition and confidence level.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '5- Radiology Reports:',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '  - Access the "Radiology" section to view historical reports.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '  - Reports include details about different X-ray scans.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          // Add more steps as needed
+          SizedBox(height: 16),
+          Text(
+            'FAQs:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '1. Q: How often should I use the app?',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '   A: For regular monitoring, use the app whenever you have new X-ray images. Consult your healthcare provider for a recommended frequency.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '2. Q: How accurate are the predictions?',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '   A: The app provides predictions based on the analysis of X-ray images. Consult with a healthcare professional for a comprehensive diagnosis.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '3. Q: Can I share reports with my doctor?',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '   A: Yes, you can save and share the radiology reports generated by the app. It\'s recommended to consult with your doctor for a detailed analysis.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          Text(
+            '4. Q: What do the confidence levels mean?',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Text(
+            '   A: Confidence levels represent the app\'s certainty about the predicted condition. Higher confidence indicates a more reliable prediction.',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          // Add more FAQs as needed
+        ],
       ),
     );
   }
