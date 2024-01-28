@@ -63,6 +63,24 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
+                          _showResetPasswordDialog();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Center(
+                            child: Text(
+                              'Forget your password?',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFFF0F8FF),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -204,11 +222,88 @@ class _SignInPageState extends State<SignInPage> {
 
         // Display the error message in a dialog
         Fluttertoast.showToast(
-          msg: 'Incrrect username or password.',
+          msg: 'Incorrect username or password.',
           backgroundColor: Color(0xFFF0F8FF),
           textColor: Color(0xFF054E65),
         );
       }
+    }
+  }
+
+  void _showResetPasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Reset Password',
+            style: TextStyle(
+              color: Color(0xFF054E65), // Set the text color
+            ),
+          ),
+          backgroundColor: Color(0xFFF0F8FF), // Set the background color
+          content: Text(
+            'Enter your email to receive a password reset link:',
+            style: TextStyle(
+              color: Color(0xFF054E65), // Set the text color
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFF054E65), // Set the text color
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                _handleResetPassword(context);
+              },
+              child: Text(
+                'Reset',
+                style: TextStyle(
+                  color: Color(0xFF054E65), // Set the text color
+                ),
+              ),
+            ),
+          ],
+          contentPadding: EdgeInsets.all(20),
+        );
+      },
+    );
+  }
+
+  void _handleResetPassword(BuildContext context) async {
+    if (_emailController.text.isNotEmpty) {
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: _emailController.text,
+        );
+
+        Fluttertoast.showToast(
+          msg: 'Password reset email sent. Check your email.',
+          backgroundColor: Color(0xFFF0F8FF),
+          textColor: Color(0xFF054E65),
+        );
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: 'Error: ${e.message}',
+          backgroundColor: Color(0xFFF0F8FF),
+          textColor: Color(0xFF054E65),
+        );
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Please enter your email.',
+        backgroundColor: Color(0xFFF0F8FF),
+        textColor: Color(0xFF054E65),
+      );
     }
   }
 }
