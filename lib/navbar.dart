@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/user_model.dart';
@@ -116,7 +117,8 @@ class _NavBarState extends State<NavBar> {
               child: Text('Cancel',style: TextStyle(color: Color(0xFF06607B))),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pop(); // Close the dialog
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
               },

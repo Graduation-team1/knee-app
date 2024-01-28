@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: FirebaseAuth.instance.currentUser != null? XRaysPage(): SplashScreen(),
       ),
     );
   }
