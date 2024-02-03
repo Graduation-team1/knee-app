@@ -106,6 +106,13 @@ class _RadiologyPageState extends State<RadiologyPage> {
                               ),
                             ],
                           ),
+                          Spacer(),
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Color(0xFF065972)),
+                            onPressed: () {
+                              deleteHistory(_history[index]['_id']);
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -125,5 +132,14 @@ class _RadiologyPageState extends State<RadiologyPage> {
     String result = parsedResponse['result'];
 
     return 'Result: $result,\nConfidence: ${(confidence * 100).toStringAsFixed(2)}%';
+  }
+
+  Future<void> deleteHistory(int id) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int result = await helper.deleteHistory(id);
+    if (result > 0) {
+      // Row deleted successfully, refresh the UI
+      loadHistory();
+    }
   }
 }

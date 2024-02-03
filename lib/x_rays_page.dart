@@ -132,7 +132,9 @@ class _XRaysPageState extends State<XRaysPage> {
         tooltip: 'Predict',
         child: Icon(Icons.send, color: Color(0xFF06607B)),
         backgroundColor: Color(0xFFF0F8FF),
+        splashColor: Color(0x98021E3D), // Set your desired splash color
       ),
+
     );
   }
 
@@ -143,7 +145,7 @@ class _XRaysPageState extends State<XRaysPage> {
   }
 
   Future<String?> uploadPhoto(String imagePath) async {
-    final apiUrl = 'http://192.168.1.5:5000/predictApi';
+    final apiUrl = 'http://192.168.1.7:5000/predictApi';
 
     File imageFile = File(imagePath);
     List<int> imageBytes = await imageFile.readAsBytes();
