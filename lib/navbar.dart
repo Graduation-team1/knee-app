@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/sign_in_page.dart';
+import 'package:knee_app/sign_up_page.dart';
 import 'package:knee_app/user_model.dart';
 import 'package:knee_app/utils.dart';
 import 'package:knee_app/x_rays_page.dart';
@@ -15,6 +16,7 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'exercise.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -34,7 +36,6 @@ class _NavBarState extends State<NavBar> {
 
   Future<void> loadImage() async {
     _image ??= await loadProfileImage();
-    // Ensure the widget is rebuilt after the image is loaded
     if (mounted) {
       setState(() {});
     }
@@ -60,7 +61,7 @@ class _NavBarState extends State<NavBar> {
                 Positioned(
                   child: IconButton(
                     onPressed: selectImage,
-                    icon: Icon(Icons.add_a_photo, color: Color(0xFFF0F8FF),size: 19,),
+                    icon: Icon(Icons.add_a_photo, color: Color(0xFFF0F8FF), size: 19,),
                   ),
                   bottom: -15,
                   left: 33,
@@ -80,22 +81,46 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
           ),
-          ListTile(leading: Icon(Icons.document_scanner_outlined,color: Color(0xFF06607B),),title: Text('X-Ray Scan',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=>{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>XRaysPage()))
-          },),
-          ListTile(leading: Icon(Icons.chat_outlined,color: Color(0xFF06607B),),title: Text('AI Assistant',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=>{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Chat()))
-          },),
-          ListTile(leading: Icon(Icons.settings_backup_restore_outlined,color: Color(0xFF06607B),),title: Text('Radiology',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=>{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RadiologyPage()))
-          },),
-          ListTile(leading: Icon(Icons.star_rate_outlined,color: Color(0xFF06607B),),title: Text('Rating us',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=>{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RatingPage()))
-          },),
-          ListTile(leading: Icon(Icons.help_outline,color: Color(0xFF06607B),),title: Text('Help',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=>{
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Help()))
-          },),
-          ListTile(leading: Icon(Icons.logout_rounded,color: Color(0xFF06607B),),title: Text('Sign Out',style: TextStyle(color: Color(0xFF06607B)),),onTap:()=> _showSignOutDialog(),),
+          ListTile(
+            leading: Icon(Icons.document_scanner_outlined, color: Color(0xFF06607B)),
+            title: Text('X-Ray Scan', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => XRaysPage())),
+          ),
+          ListTile(
+            leading: Icon(Icons.chat_outlined, color: Color(0xFF06607B)),
+            title: Text('AI Assistant', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Chat())),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_backup_restore_outlined, color: Color(0xFF06607B)),
+            title: Text('Radiology', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RadiologyPage())),
+          ),
+          ListTile(
+            leading: Icon(Icons.star_rate_outlined, color: Color(0xFF06607B)),
+            title: Text('Rating us', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RatingPage())),
+          ),
+          ListTile(
+            leading: Icon(Icons.directions_walk, color: Color(0xFF06607B)),
+            title: Text('Exercises', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExercisePage())),
+          ),
+          ListTile(
+            leading: Icon(Icons.help_outline, color: Color(0xFF06607B)),
+            title: Text('Help', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Help())),
+          ),
+          ListTile(
+            leading: Icon(Icons.logout_rounded, color: Color(0xFF06607B)),
+            title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => _showSignOutDialog(),
+          ),
+          ListTile(
+            leading: Icon(Icons.delete_forever, color: Color(0xFF06607B)),
+            title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () => _showDeleteAccountDialog(),
+          ),
         ],
       ),
     );
@@ -107,22 +132,22 @@ class _NavBarState extends State<NavBar> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text('Sign Out',style: TextStyle(color: Color(0xFF06607B))),
-          content: Text('Are you sure you want to sign out?',style: TextStyle(color: Color(0xFF06607B))),
+          title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
+          content: Text('Are you sure you want to sign out?', style: TextStyle(color: Color(0xFF06607B))),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
-              child: Text('Cancel',style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
             ),
             TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
               },
-              child: Text('Yes',style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Yes', style: TextStyle(color: Color(0xFF06607B))),
             ),
           ],
         );
@@ -130,10 +155,49 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
+  void _showDeleteAccountDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
+          content: Text('Are you sure you want to delete your account? This action is irreversible.', style: TextStyle(color: Color(0xFF06607B))),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _deleteAccount();
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignUpPage()));
+              },
+              child: Text('Delete', style: TextStyle(color: Color(0xFF06607B))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteAccount() async {
+    try {
+      await FirebaseAuth.instance.currentUser?.delete();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignUpPage()));
+    } catch (e) {
+      print('Error deleting account: $e');
+      // Handle errors here, e.g., show an error dialog
+    }
+  }
+
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
     setState(() {
-      _image=img;
+      _image = img;
     });
   }
 
@@ -142,8 +206,6 @@ class _NavBarState extends State<NavBar> {
     String base64Image = base64Encode(image);
     prefs.setString('profile_image', base64Image);
   }
-
-
 
   @override
   void dispose() {
@@ -162,9 +224,6 @@ Future<Uint8List?> loadProfileImage() async {
   }
   return null;
 }
-
-
-
 
 
 

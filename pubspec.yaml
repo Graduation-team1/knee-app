@@ -83,6 +83,14 @@ flutter:
       - assets/logo-no-background.png
       - assets/pro.png
       - assets/animation.json
+      - assets/exercise1.jpg
+      - assets/exercise2.jpg
+      - assets/exercise3.jpg
+      - assets/exercise4.jpg
+      - assets/exercise5.jpg
+      - assets/exercise6.jpg
+      - assets/exercise7.jpg
+      - assets/exercise8.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

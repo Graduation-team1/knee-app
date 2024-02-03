@@ -192,6 +192,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _handleSignUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      // Check if the email address is a Gmail address
+      if (!_emailController.text.endsWith('@gmail.com')) {
+        Fluttertoast.showToast(
+          msg: 'Please use a Gmail email address.',
+          backgroundColor: Color(0xFFF0F8FF),
+          textColor: Color(0xFF054E65),
+        );
+        return;
+      }
+
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
@@ -207,10 +217,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
         // Show a dialog for 2 seconds
         Fluttertoast.showToast(
-            msg: 'You have successfully signed up!',
-            backgroundColor: Color(0xFFF0F8FF),
-            textColor: Color(0xFF054E65),
-            );
+          msg: 'You have successfully signed up!',
+          backgroundColor: Color(0xFFF0F8FF),
+          textColor: Color(0xFF054E65),
+        );
 
         // Delay navigation for 2 seconds
         Future.delayed(Duration(seconds: 1), () {
@@ -246,38 +256,5 @@ class _SignUpPageState extends State<SignUpPage> {
         print(e);
       }
     }
-  }
-
-  void _showDialog(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFF06607B),
-            ), // Change title text color
-          ),
-          content: Text(
-            content,
-            style: TextStyle(
-                color: Color(0xFF054E65)), // Change content text color
-          ),
-          backgroundColor: Color(0xFFF0F8FF),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK',
-                  style: TextStyle(
-                    color: Color(0xFF06607B),
-                  )), // Change button text color
-            ),
-          ],
-        );
-      },
-    );
   }
 }
