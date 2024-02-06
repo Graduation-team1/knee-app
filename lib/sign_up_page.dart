@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/databaseHelperforProfile.dart';
 import 'package:knee_app/sign_in_page.dart';
-import 'package:knee_app/user_model.dart';
 import 'package:knee_app/x_rays_page.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +194,8 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+
+
   void _handleSignUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Check if the email address is a Gmail address
@@ -209,11 +215,14 @@ class _SignUpPageState extends State<SignUpPage> {
         );
 
         FirebaseAuth.instance.currentUser!.sendEmailVerification();
-        // Set user information using Provider
-        Provider.of<UserModel>(context, listen: false).setUserInformation(
-          _userNameController.text,
-          _emailController.text,
-        );
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('username', _userNameController.text);
+        prefs.setString('email', _emailController.text);
+        prefs.setString('pass', _passwordController.text);
+
+        ByteData data = await rootBundle.load('assets/pro.png');
+        Uint8List defaultImage = data.buffer.asUint8List();
+        await DatabaseHelper.saveProfileImage(defaultImage);
 
         // Show a dialog for 2 seconds
         Fluttertoast.showToast(
@@ -222,12 +231,10 @@ class _SignUpPageState extends State<SignUpPage> {
           textColor: Color(0xFF054E65),
         );
 
-        // Delay navigation for 2 seconds
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.of(context).pop(); // Close the dialog
+        Future.delayed(Duration(seconds: 2), () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => XRaysPage()),
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
           );
         });
       } on FirebaseAuthException catch (e) {

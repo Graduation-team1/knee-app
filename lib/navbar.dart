@@ -1,22 +1,21 @@
-import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:knee_app/chat.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:knee_app/exercise.dart';
+import 'package:knee_app/help.dart';
+import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/sign_up_page.dart';
-import 'package:knee_app/user_model.dart';
 import 'package:knee_app/utils.dart';
-import 'package:knee_app/x_rays_page.dart';
-import 'package:knee_app/help.dart';
-import 'package:knee_app/radiology.dart';
-import 'package:knee_app/rating_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'exercise.dart';
+import 'package:sqflite/sqflite.dart';
+import 'databaseHelperforProfile.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -27,32 +26,69 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   Uint8List? _image;
+  String? _userName;
+  String? _userEmail;
 
   @override
   void initState() {
     super.initState();
     loadImage();
+    loadUserData();
   }
 
   Future<void> loadImage() async {
-    _image ??= await loadProfileImage();
+    _image ??= (await loadProfileImage()) as Uint8List?;
     if (mounted) {
       setState(() {});
     }
   }
 
+  Future<Uint8List?> loadProfileImage() async {
+    try {
+      Database db = await DatabaseHelper.database;
+      List<Map<String, dynamic>> result = await db.query('profile_images', orderBy: 'id DESC', limit: 1);
+      if (result.isNotEmpty) {
+        return result.first['image'] as Uint8List;
+      }
+    } catch (e) {
+      print('Error loading profile image: $e');
+      Fluttertoast.showToast(
+        msg: 'Error loading profile image: $e',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _userName = prefs.getString('username');
+    _userEmail = prefs.getString('email');
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userModel = Provider.of<UserModel>(context);
-
     return Drawer(
       backgroundColor: Color(0xFFF0F8FF),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(userModel.userName ?? ''),
-            accountEmail: Text(userModel.userEmail ?? ''),
+            accountName: Text(_userName ?? ''),
+            accountEmail: Text(_userEmail ?? ''),
             currentAccountPicture: Stack(
               children: [
                 _image != null
@@ -82,51 +118,49 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.document_scanner_outlined, color: Color(0xFF06607B)),
-            title: Text('X-Ray Scan', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => XRaysPage())),
-          ),
-          ListTile(
-            leading: Icon(Icons.chat_outlined, color: Color(0xFF06607B)),
-            title: Text('AI Assistant', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Chat())),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings_backup_restore_outlined, color: Color(0xFF06607B)),
-            title: Text('Radiology', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RadiologyPage())),
-          ),
-          ListTile(
-            leading: Icon(Icons.star_rate_outlined, color: Color(0xFF06607B)),
-            title: Text('Rating us', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RatingPage())),
-          ),
-          ListTile(
             leading: Icon(Icons.directions_walk, color: Color(0xFF06607B)),
             title: Text('Exercises', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExercisePage())),
+            onTap: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ExercisePage()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.help_outline, color: Color(0xFF06607B)),
             title: Text('Help', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Help())),
+            onTap: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.star_rate_outlined, color: Color(0xFF06607B)),
+            title: Text('Rating Us', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => RatingPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.share, color: Color(0xFF06607B)),
+            title: Text('Share App', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () {
+              _shareApp();
+            },
           ),
           ListTile(
             leading: Icon(Icons.logout_rounded, color: Color(0xFF06607B)),
             title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => _showSignOutDialog(),
+            onTap: () => _showSignOutDialog(context),
           ),
           ListTile(
             leading: Icon(Icons.delete_forever, color: Color(0xFF06607B)),
             title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
-            onTap: () => _showDeleteAccountDialog(),
+            onTap: () => _showDeleteAccountDialog(context),
           ),
         ],
       ),
     );
   }
 
-  void _showSignOutDialog() {
+  void _showSignOutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -144,6 +178,7 @@ class _NavBarState extends State<NavBar> {
             TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
+                await deletePassword();
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
               },
@@ -154,8 +189,24 @@ class _NavBarState extends State<NavBar> {
       },
     );
   }
+  Future<void> deletePassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('pass');
+    await prefs.remove('passs');
+  }
 
-  void _showDeleteAccountDialog() {
+  @override
+  void dispose() {
+    _handleDispose();
+    super.dispose();
+  }
+  Future<void> _handleDispose() async {
+    if (_image != null) {
+      await DatabaseHelper.saveProfileImage(_image!);
+    }
+  }
+
+  void _showDeleteAccountDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -172,9 +223,17 @@ class _NavBarState extends State<NavBar> {
             ),
             TextButton(
               onPressed: () async {
-                await _deleteAccount();
+                await _deleteAccount(context);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.remove('pass');
+                await prefs.remove('username');
+                await prefs.remove('email');
+                // await DatabaseHelper.deleteProfileImage();
                 Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignUpPage()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                );
               },
               child: Text('Delete', style: TextStyle(color: Color(0xFF06607B))),
             ),
@@ -183,47 +242,38 @@ class _NavBarState extends State<NavBar> {
       },
     );
   }
-
-  Future<void> _deleteAccount() async {
+  Future<void> _deleteAccount(BuildContext context) async {
     try {
       await FirebaseAuth.instance.currentUser?.delete();
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignUpPage()));
+      ByteData defaultImageData = await rootBundle.load('assets/pro.png');
+      Uint8List defaultImage = defaultImageData.buffer.asUint8List();
+      await DatabaseHelper.saveProfileImage(defaultImage);
     } catch (e) {
       print('Error deleting account: $e');
-      // Handle errors here, e.g., show an error dialog
     }
   }
 
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
-  }
 
-  void saveProfileImage(Uint8List image) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String base64Image = base64Encode(image);
-    prefs.setString('profile_image', base64Image);
-  }
+  void _shareApp() async {
+    try {
+      final ByteData bytes = await rootBundle.load('assets/app-release.apk');
+      final List<int> apkBytes = bytes.buffer.asUint8List();
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/app-release.apk');
+      await tempFile.writeAsBytes(apkBytes);
 
-  @override
-  void dispose() {
-    if (_image != null) {
-      saveProfileImage(_image!);
+      Share.shareFiles(['${tempFile.path}'], text: 'Check out this amazing app!');
+    } catch (e) {
+      print('Error sharing app: $e');
+      Fluttertoast.showToast(
+        msg: 'Error sharing app: $e',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+      );
     }
-    super.dispose();
   }
 }
-
-Future<Uint8List?> loadProfileImage() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? base64Image = prefs.getString('profile_image');
-  if (base64Image != null) {
-    return base64Decode(base64Image);
-  }
-  return null;
-}
-
-
 

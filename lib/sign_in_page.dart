@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:knee_app/bottomNavbar.dart';
 import 'package:knee_app/copy.dart';
 import 'package:knee_app/sign_up_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -206,21 +208,13 @@ class _SignInPageState extends State<SignInPage> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
+        );SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('passs', _passwordController.text);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const BottomNavBar()),
         );
-        Navigator.of(context).pushReplacementNamed('HomePage');
       } on FirebaseAuthException catch (e) {
-        String errorMessage;
-
-        // if (e.code == 'user-not-found') {
-        //   errorMessage = 'No user found for that email.';
-        // } else if (e.code == 'wrong-password') {
-        //   errorMessage = 'Wrong password provided for that user.';
-        // } else {
-        //   errorMessage =
-        //       'An unexpected error occurred. Please try again later.';
-        // }
-
-        // Display the error message in a dialog
         Fluttertoast.showToast(
           msg: 'Incorrect username or password.',
           backgroundColor: Color(0xFFF0F8FF),
@@ -229,6 +223,7 @@ class _SignInPageState extends State<SignInPage> {
       }
     }
   }
+
 
   void _showResetPasswordDialog() {
     showDialog(
