@@ -121,21 +121,24 @@ class _NavBarState extends State<NavBar> {
             leading: Icon(Icons.directions_walk, color: Color(0xFF06607B)),
             title: Text('Exercises', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ExercisePage()));
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/exercise');
             },
           ),
           ListTile(
             leading: Icon(Icons.help_outline, color: Color(0xFF06607B)),
             title: Text('Help', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/help');
             },
           ),
           ListTile(
             leading: Icon(Icons.star_rate_outlined, color: Color(0xFF06607B)),
             title: Text('Rating Us', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => RatingPage()));
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/rating');
             },
           ),
           ListTile(
@@ -228,7 +231,6 @@ class _NavBarState extends State<NavBar> {
                 await prefs.remove('pass');
                 await prefs.remove('username');
                 await prefs.remove('email');
-                // await DatabaseHelper.deleteProfileImage();
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,

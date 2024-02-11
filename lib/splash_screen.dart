@@ -23,13 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
     loadUserData();
     Future.delayed(const Duration(seconds: 5), () {
       if(_name == null && _email == null && _pass==null){
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => SignUpPage()));
       }
       else if (_pass != null || _passs!=null) {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => const BottomNavBar()));

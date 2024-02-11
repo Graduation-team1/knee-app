@@ -8,9 +8,15 @@ class RatingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
       backgroundColor: Color(0xFF06607B),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       elevation: 0,
     ),
-      drawer: NavBar(),
+      // drawer: NavBar(),
       backgroundColor: Color(0xFF06607B),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

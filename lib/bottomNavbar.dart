@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:knee_app/chat.dart';
+import 'package:knee_app/exercise.dart';
+import 'package:knee_app/help.dart';
 import 'package:knee_app/radiology.dart';
+import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/x_rays_page.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -12,7 +15,6 @@ class BottomNavBar extends StatefulWidget {
 
   const BottomNavBar({Key? key}) : super(key: key);
 
-  // New method to toggle bottom navbar from outside the state
   static void toggleBottomNavBar(bool show) {
     navKey.currentState?.toggleBottomNavBar(show);
   }
@@ -48,77 +50,61 @@ class _BottomNavBarState extends State<BottomNavBar> {
       key: BottomNavBar.navKey,
       backgroundColor: Color(0xFF06607B),
       bottomNavigationBar: _showBottomNavBar
-          ? CurvedNavigationBar(
-        color: Color(0xFFF0F8FF),
-        index: _selectedIndex,
-        items: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.document_scanner_outlined,
-                  size: 28,
-                  color: _selectedIndex == 0
-                      ? Color(0xFFF0F8FF)
-                      : Color(0xFF06607B)),
-              Text('X_Ray',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: _selectedIndex == 0
-                          ? Color(0xFFF0F8FF)
-                          : Color(0xFF06607B))),
-            ],
+          ? Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(5)),color:  Color(0xFFF0F8FF), boxShadow: [
+          BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
+        ]),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+            child: GNav(
+              gap: 3,
+              activeColor:  Color(0xFF06607B),
+              iconSize: 26,
+              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+              duration: Duration(milliseconds: 600),
+              tabs: [
+                GButton(
+                  icon: Icons.document_scanner_outlined,
+                  iconColor: Color(0xFF06607B) ,
+                  text: 'X-Ray',
+                  iconSize:26 ,
+                  textSize: 26,
+                ),
+                GButton(
+                  icon: Icons.chat_outlined,
+                  iconColor:Color(0xFF06607B) ,
+                  text: 'Chat',
+                  iconSize:26 ,
+                  textSize: 26,
+                ),
+                GButton(
+                  icon: Icons.history,
+                  iconColor:Color(0xFF06607B) ,
+                  text: 'Radiology',
+                  iconSize:26,
+                  textSize: 26,
+                ),
+              ],
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) {
+                setState(() {
+                  if (_selectedIndex != index) {
+                    _selectedIndex = index;
+                    _navigatorKey.currentState
+                        ?.popUntil((route) => route.isFirst);
+                  }
+                  if (index == 1) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Chat()),
+                    );
+                  }
+                });
+              },
+            ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.chat_outlined,
-                  size: 28,
-                  color: _selectedIndex == 1
-                      ? Color(0xFFF0F8FF)
-                      : Color(0xFF06607B)),
-              Text('AI Assistant',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: _selectedIndex == 1
-                          ? Color(0xFFF0F8FF)
-                          : Color(0xFF06607B))),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.history,
-                  size: 28,
-                  color: _selectedIndex == 2
-                      ? Color(0xFFF0F8FF)
-                      : Color(0xFF06607B)),
-              Text('Radiology',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: _selectedIndex == 2
-                          ? Color(0xFFF0F8FF)
-                          : Color(0xFF06607B))),
-            ],
-          ),
-        ],
-        backgroundColor: Color(0xFF06607B),
-        buttonBackgroundColor: Colors.transparent,
-        height: 55,
-        onTap: (index) {
-          setState(() {
-            if (_selectedIndex != index) {
-              _selectedIndex = index;
-              _navigatorKey.currentState
-                  ?.popUntil((route) => route.isFirst);
-            }
-            if (index == 1) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Chat()),
-              );
-            }
-          });
-        },
+        ),
       )
           : null,
       body: Navigator(
@@ -126,10 +112,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
         onGenerateRoute: (settings) {
           return MaterialPageRoute(
             settings: settings,
-            builder: (context) => screens[_selectedIndex],
+            builder: (context) {
+              switch (settings.name) {
+                case '/help':
+                  _selectedIndex = -1;
+                  return Help();
+                case '/rating':
+                  _selectedIndex = -1;
+                  return RatingPage();
+                case '/exercise':
+                  _selectedIndex = -1;
+                  return ExercisePage();
+                default:
+                // Default case
+                  return screens[_selectedIndex];
+              }
+            },
           );
         },
       ),
     );
   }
 }
+

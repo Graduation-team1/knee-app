@@ -19,10 +19,16 @@ class ExercisePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBar(),
+      // drawer: NavBar(),
       appBar: AppBar(
         backgroundColor: Color(0xFF06607B),
         title: Text('Exercises'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         elevation: 0,
       ),
       backgroundColor: Color(0xFF06607B),

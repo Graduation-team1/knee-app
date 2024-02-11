@@ -8,10 +8,16 @@ class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBar(),
+      // drawer: NavBar(),
       appBar: AppBar(
         backgroundColor: Color(0xFF06607B),
         title: Text('Help'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         elevation: 0,
       ),
       backgroundColor: Color(0xFF06607B),
@@ -31,7 +37,7 @@ class Help extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)
                 ,color:  Color(0xFFF0F8FF),
               boxShadow: [
-                BoxShadow(color: Color.fromRGBO(11, 180, 185, 1.0),
+                BoxShadow(color: Color.fromRGBO(12, 194, 199, 1.0),
                   blurRadius: 20,
                   offset: Offset(0,10),
                 )]
@@ -130,7 +136,7 @@ class Help extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
               ,color:  Color(0xFFF0F8FF),
               boxShadow: [
-                BoxShadow(color: Color.fromRGBO(11, 180, 185, 1.0),
+                BoxShadow(color: Color.fromRGBO(12, 194, 199, 1.0),
                   blurRadius: 20,
                   offset: Offset(0,10),
                 )]
@@ -150,7 +156,7 @@ class Help extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
               ,color:  Color(0xFFF0F8FF),
               boxShadow: [
-                BoxShadow(color: Color.fromRGBO(11, 180, 185, 1.0),
+                BoxShadow(color: Color.fromRGBO(12, 194, 199, 1.0),
                   blurRadius: 20,
                   offset: Offset(0,10),
                 )]
@@ -170,7 +176,7 @@ class Help extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
               ,color:  Color(0xFFF0F8FF),
               boxShadow: [
-                BoxShadow(color: Color.fromRGBO(11, 180, 185, 1.0),
+                BoxShadow(color: Color.fromRGBO(12, 194, 199, 1.0),
                   blurRadius: 20,
                   offset: Offset(0,10),
                 )]
@@ -190,7 +196,7 @@ class Help extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
               ,color:  Color(0xFFF0F8FF),
               boxShadow: [
-                BoxShadow(color: Color.fromRGBO(11, 180, 185, 1.0),
+                BoxShadow(color: Color.fromRGBO(12, 194, 199, 1.0),
                   blurRadius: 20,
                   offset: Offset(0,10),
                 )]

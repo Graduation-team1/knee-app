@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/radiology.dart';
 import 'package:knee_app/rating_bar.dart';
@@ -37,6 +38,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
       ),
+      routes: {
+        '/help': (context) => Help(),
+        '/rating': (context) => RatingPage(),
+        '/exercise': (context) => ExercisePage(),
+      },
       debugShowCheckedModeBanner: false,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -68,3 +74,4 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
