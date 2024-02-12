@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -223,6 +224,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ByteData data = await rootBundle.load('assets/pro.png');
         Uint8List defaultImage = data.buffer.asUint8List();
         await DatabaseHelper.saveProfileImage(defaultImage);
+        await addCategory();
 
         // Show a dialog for 2 seconds
         Fluttertoast.showToast(
@@ -262,6 +264,17 @@ class _SignUpPageState extends State<SignUpPage> {
       } catch (e) {
         print(e);
       }
+    }
+  }
+  Future<void> addCategory() async {
+    try {
+      await FirebaseFirestore.instance.collection('users').add({
+        'user_name': _userNameController.text,
+        'email': _emailController.text,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
+      });
+    } catch (error) {
+      print(error);
     }
   }
 }

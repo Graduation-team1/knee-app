@@ -12,6 +12,8 @@ class RadiologyPage extends StatefulWidget {
 
 class _RadiologyPageState extends State<RadiologyPage> {
   List<Map<String, dynamic>> _history = [];
+  List<Map<String, dynamic>> _filteredHistory = [];
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -24,6 +26,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
     List<Map<String, dynamic>> history = await helper.queryAllRows();
     setState(() {
       _history = history;
+      _filteredHistory = history;
     });
   }
 
@@ -56,6 +59,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                 SizedBox(width: 10),
                 Expanded(
                   child: TextField(
+                    controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Search',
                       prefixIcon: Icon(Icons.search),
@@ -64,7 +68,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                       ),
                     ),
                     onChanged: (String value) {
-                      // Implement search logic here if needed
+                      filterHistory(value);
                     },
                   ),
                 ),
@@ -75,7 +79,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: _history.length,
+                itemCount: _filteredHistory.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     color: Color(0xFFF0F8FF),
@@ -88,7 +92,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: FileImage(File(_history[index]['imagePath'])),
+                                image: FileImage(File(_filteredHistory[index]['imagePath'])),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -98,11 +102,11 @@ class _RadiologyPageState extends State<RadiologyPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Name: ${_history[index]['userInput']}',
+                                'Name: ${_filteredHistory[index]['userInput']}',
                                 style: TextStyle(color: Color(0xFF06607B)),
                               ),
                               Text(
-                                formatMachineResponse(_history[index]['machineResponse']),
+                                formatMachineResponse(_filteredHistory[index]['machineResponse']),
                                 style: TextStyle(color: Color(0xFF06607B)),
                               ),
                             ],
@@ -111,7 +115,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                           IconButton(
                             icon: Icon(Icons.delete, color: Color(0xFF065972)),
                             onPressed: () {
-                              deleteHistory(_history[index]['_id']);
+                              deleteHistory(_filteredHistory[index]['_id']);
                             },
                           ),
                         ],
@@ -124,8 +128,6 @@ class _RadiologyPageState extends State<RadiologyPage> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomNavBar(),
-
     );
   }
 
@@ -145,4 +147,15 @@ class _RadiologyPageState extends State<RadiologyPage> {
       loadHistory();
     }
   }
+
+  void filterHistory(String query) {
+    setState(() {
+      _filteredHistory = _history.where((entry) {
+        final name = entry['userInput'].toLowerCase();
+        return name.contains(query.toLowerCase());
+      }).toList();
+    });
+  }
+
+
 }

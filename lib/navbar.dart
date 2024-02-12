@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'databaseHelperforProfile.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
 
@@ -28,12 +29,33 @@ class _NavBarState extends State<NavBar> {
   Uint8List? _image;
   String? _userName;
   String? _userEmail;
+  void readData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> userData = doc.data() as Map<String, dynamic>;
+        String email = userData['email'];
+        String user_name = userData['user_name'];
+
+        setState(() {
+          _userEmail = email;
+          _userName = user_name;// Update the email value in the state
+        });
+      });
+    }).catchError((e) {
+      print('Error getting documents: $e');
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    readData();
     loadImage();
-    loadUserData();
+  //  loadUserData();
   }
 
   Future<void> loadImage() async {
@@ -63,14 +85,14 @@ class _NavBarState extends State<NavBar> {
     }
   }
 
-  Future<void> loadUserData() async {
+  /*Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userName = prefs.getString('username');
     _userEmail = prefs.getString('email');
     if (mounted) {
       setState(() {});
     }
-  }
+  }*/
 
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
@@ -138,7 +160,7 @@ class _NavBarState extends State<NavBar> {
             title: Text('Rating Us', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/rating');
+              _showRatingDialog(context);
             },
           ),
           ListTile(
@@ -277,5 +299,81 @@ class _NavBarState extends State<NavBar> {
       );
     }
   }
+
+  void _showRatingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double rating = 0;
+        return AlertDialog(
+          backgroundColor: Color(0xFFF0F8FF),
+          title: Text('Rate Us', style: TextStyle(color: Color(0xFF06607B))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RatingBar.builder(
+                initialRating: rating,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Color(0xFF06607B),
+                ),
+                onRatingUpdate: (newRating) {
+                  rating = newRating;
+                },
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Please rate our app',
+                style: TextStyle(color: Color(0xFF06607B)),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
+            ),
+            TextButton(
+              onPressed: () {
+                // Process the rating (save it, send it to a server, etc.)
+                print('User rated: $rating');
+                Navigator.of(context).pop();
+                String message;
+                if (rating == 1) {
+                  message = 'We\'re sorry to hear that. Please let us know how we can improve.';
+                } else if (rating == 2) {
+                  message = 'Thank you for your feedback!';
+                } else if (rating == 4) {
+                  message = 'We\'re glad you liked it!';
+                } else if (rating == 5) {
+                  message = 'Thank you for your support!';
+                } else {
+                  message = 'Thank you for rating!';
+                }
+                Fluttertoast.showToast(
+                  msg: message,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Color(0xFFF0F8FF),
+                  textColor:  Color(0xFF06607B),
+                );
+              },
+              child: Text('Submit', style: TextStyle(color: Color(0xFF06607B))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
 
