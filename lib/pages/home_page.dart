@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:knee_app/bottomNavbar.dart';
 import 'package:knee_app/constants.dart';
 import 'package:knee_app/global_bloc.dart';
+import 'package:knee_app/help.dart';
 import 'package:knee_app/models/medicine.dart';
 import 'package:knee_app/pages/medicine_details/medicine_details.dart';
 import 'package:knee_app/pages/new_entry/new_entry_page.dart';
@@ -20,6 +22,19 @@ class HomePage extends StatelessWidget {
         style: TextStyle(color: kPrimaryColor,fontSize: 30),
         ),
         backgroundColor: kScaffoldColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BottomNavBar(),
+
+                ),
+                    (route) => false
+            ); // Navigate back to previous page
+          },
+        ),
       ),
       body: Container(
         color: Color(0xFF06607B), // Set background color to #06607B

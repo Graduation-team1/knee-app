@@ -144,8 +144,10 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:knee_app/chat.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
+import 'package:knee_app/pages/home_page.dart';
 import 'package:knee_app/radiology.dart';
 import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/x_rays_page.dart';
@@ -175,12 +177,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
     if (show && _selectedIndex == 1) {
       _navigatorKey.currentState?.maybePop();
     }
+    if (show && _selectedIndex == 3) {
+      _navigatorKey.currentState?.maybePop();
+    }
   }
 
   List<Widget> screens = [
     XRaysPage(),
     Chat(),
     RadiologyPage(),
+    HomePage(),
   ];
   int _selectedIndex = 0;
   bool _showBottomNavBar = true;
@@ -193,47 +199,59 @@ class _BottomNavBarState extends State<BottomNavBar> {
       key: BottomNavBar.navKey,
       backgroundColor: Color(0xFF06607B),
       bottomNavigationBar: _showBottomNavBar
-          ? BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            if (_selectedIndex != index) {
-              _selectedIndex = index;
-              _navigatorKey.currentState
-                  ?.popUntil((route) => route.isFirst);
-            }
-            if (index == 1) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Chat()),
-              );
-            }
-          });
-        },
-        elevation: 0.0,
-        iconSize: 25,
-        selectedFontSize: 13,
-        unselectedFontSize: 13,
-        backgroundColor: Color(0xFFF0F8FF),
-        selectedItemColor:Color(0xFF06607B),
-        unselectedItemColor: Color(0xFF06607B),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.document_scanner_outlined),
-            // activeIcon: Icon(Icons.document_scanner),
-            label: 'X-Ray',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            // activeIcon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            // activeIcon: Icon(Icons.history_sharp),
-            label: 'Radiology',
-          ),
-        ],
+          ? Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: kPrimaryColor, // Set bottom navigation bar background color to red
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              if (_selectedIndex != index) {
+                _selectedIndex = index;
+                _navigatorKey.currentState
+                    ?.popUntil((route) => route.isFirst);
+              }
+              if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Chat()),
+                );
+              }
+              if (index == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              }
+            });
+          },
+          elevation: 0.0,
+          iconSize: 25,
+          selectedFontSize: 13,
+          unselectedFontSize: 13,
+          backgroundColor: Colors.transparent, // Set transparent background
+          selectedItemColor: Color(0xFF06607B),
+          unselectedItemColor: Color(0xFF06607B),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.document_scanner_outlined),
+              label: 'X-Ray',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_outlined),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'Radiology',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notification_add),
+              label: 'Reminder',
+            ),
+          ],
+        ),
       )
           : SizedBox(),
       body: Navigator(
@@ -265,3 +283,4 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
+

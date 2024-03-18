@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
             '/help': (context) => Help(),
             '/rating': (context) => RatingPage(),
             '/exercise': (context) => ExercisePage(),
+            '/xray':(context) => XRaysPage()
           },
           debugShowCheckedModeBanner: false,
           home: StreamBuilder<User?>(
