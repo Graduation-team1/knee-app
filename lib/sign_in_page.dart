@@ -1,10 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:knee_app/forget_password.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:knee_app/bottomNavbar.dart';
 import 'package:knee_app/copy.dart';
 import 'package:knee_app/sign_up_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'forgot_password_page.dart'; // Import the forgot password page
+//import 'reset_password_page.dart'; // Import the reset password page
 
 class SignInPage extends StatefulWidget {
   @override
@@ -49,7 +52,8 @@ class _SignInPageState extends State<SignInPage> {
                       ElevatedButton(
                         onPressed: () => _handleSignIn(context),
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Color(0xFF06607B), backgroundColor: Color(0xFFF0F8FF),
+                          foregroundColor: Color(0xFF06607B),
+                          backgroundColor: Color(0xFFF0F8FF),
                           minimumSize: Size(double.infinity, 50),
                         ),
                         child: Center(
@@ -64,7 +68,12 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
-                          _showResetPasswordDialog();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPasswordPage(),
+                            ),
+                          );
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
@@ -83,9 +92,11 @@ class _SignInPageState extends State<SignInPage> {
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpPage()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          );
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
@@ -98,7 +109,8 @@ class _SignInPageState extends State<SignInPage> {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'Sign Up',
-                                    style: TextStyle(color: Color(0xFFF0F8FF)),
+                                    style: TextStyle(
+                                        color: Color(0xFFF0F8FF)),
                                   ),
                                 ],
                               ),
@@ -207,7 +219,8 @@ class _SignInPageState extends State<SignInPage> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
-        );SharedPreferences prefs = await SharedPreferences.getInstance();
+        );
+        SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('passs', _passwordController.text);
         Navigator.push(
           context,
@@ -220,84 +233,6 @@ class _SignInPageState extends State<SignInPage> {
           textColor: Color(0xFF054E65),
         );
       }
-    }
-  }
-
-
-  void _showResetPasswordDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Reset Password',
-            style: TextStyle(
-              color: Color(0xFF054E65), // Set the text color
-            ),
-          ),
-          backgroundColor: Color(0xFFF0F8FF), // Set the background color
-          content: Text(
-            'Enter your email to receive a password reset link:',
-            style: TextStyle(
-              color: Color(0xFF054E65), // Set the text color
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Color(0xFF054E65), // Set the text color
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                _handleResetPassword(context);
-              },
-              child: Text(
-                'Reset',
-                style: TextStyle(
-                  color: Color(0xFF054E65), // Set the text color
-                ),
-              ),
-            ),
-          ],
-          contentPadding: EdgeInsets.all(20),
-        );
-      },
-    );
-  }
-
-  void _handleResetPassword(BuildContext context) async {
-    if (_emailController.text.isNotEmpty) {
-      try {
-        await FirebaseAuth.instance.sendPasswordResetEmail(
-          email: _emailController.text,
-        );
-
-        Fluttertoast.showToast(
-          msg: 'Password reset email sent. Check your email.',
-          backgroundColor: Color(0xFFF0F8FF),
-          textColor: Color(0xFF054E65),
-        );
-      } on FirebaseAuthException catch (e) {
-        Fluttertoast.showToast(
-          msg: 'Error: ${e.message}',
-          backgroundColor: Color(0xFFF0F8FF),
-          textColor: Color(0xFF054E65),
-        );
-      }
-    } else {
-      Fluttertoast.showToast(
-        msg: 'Please enter your email.',
-        backgroundColor: Color(0xFFF0F8FF),
-        textColor: Color(0xFF054E65),
-      );
     }
   }
 }
