@@ -332,7 +332,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
     var minute = int.parse(medicine.startTime![2] + medicine.startTime![3]);
 
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-        'repeatDailyAtTime channel id', 'repeatDailyAtTime channel name',
+        'repeatDailyAtTime channel id', 'repeatDailyAtTime channel name','repeatDailyAtTime channel description',
         importance: Importance.max,
         ledColor: kOtherColor,
         ledOffMs: 1000,

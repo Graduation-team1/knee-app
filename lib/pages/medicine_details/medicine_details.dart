@@ -86,7 +86,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
           title: Text(
             'Delete This Reminder?',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: TextStyle(color: kScaffoldColor,fontSize: 20),
           ),
           actions: [
             TextButton(
@@ -95,7 +95,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
               },
               child: Text(
                 'Cancel',
-                style: Theme.of(context).textTheme.caption,
+                style: TextStyle(color: kScaffoldColor,fontSize: 12),
               ),
             ),
             TextButton(
@@ -113,10 +113,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
               },
               child: Text(
                 'OK',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: kSecondaryColor),
+                style: TextStyle(color: kSecondaryColor,fontSize: 12),
               ),
             ),
           ],

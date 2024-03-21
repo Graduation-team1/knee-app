@@ -70,8 +70,7 @@ class RatingPage extends StatelessWidget {
                   // Handle the submission or navigation logic
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFF0F8FF),
-                  onPrimary: Color(0xFF435C59),
+                  foregroundColor: Color(0xFF435C59), backgroundColor: Color(0xFFF0F8FF),
                   minimumSize: Size(double.infinity, 50),
                 ),
                 child: Text(

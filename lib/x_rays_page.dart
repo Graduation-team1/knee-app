@@ -146,7 +146,7 @@ class _XRaysPageState extends State<XRaysPage> {
   }
 
   Future<String?> uploadPhoto(String imagePath) async {
-    final apiUrl = 'http://192.168.3.7:5000/predictApi';
+    final apiUrl = 'http://192.168.1.13:5000/predictApi';
 
     File imageFile = File(imagePath);
     List<int> imageBytes = await imageFile.readAsBytes();
