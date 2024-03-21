@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
+import 'package:knee_app/lottie.dart';
 import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/sign_up_page.dart';
@@ -140,7 +141,21 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.directions_walk, color: Color(0xFF06607B)),
+            leading:LottieIcon(
+              animationAsset: 'assets/icons/animationnuitrition.json',
+              size: 30.0,
+            ),
+            title: Text('Nutrition', style: TextStyle(color: Color(0xFF06607B))),
+            onTap: () async {
+              Navigator.pop(context);
+              Navigator.pushNamed(context,'/osteroNutrition');
+            },
+          ),
+          ListTile(
+            leading:LottieIcon(
+              animationAsset: 'assets/icons/animationexe.json',
+              size: 30.0,
+            ),
             title: Text('Exercises', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
               Navigator.pop(context);
@@ -148,7 +163,10 @@ class _NavBarState extends State<NavBar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.help_outline, color: Color(0xFF06607B)),
+            leading:LottieIcon(
+              animationAsset: 'assets/icons/animationhelp.json',
+              size: 25.0,
+            ),
             title: Text('Help', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
               Navigator.pop(context);
@@ -156,27 +174,38 @@ class _NavBarState extends State<NavBar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.star_rate_outlined, color: Color(0xFF06607B)),
-            title: Text('Rating Us', style: TextStyle(color: Color(0xFF06607B))),
+            leading:LottieIcon(
+              animationAsset: 'assets/icons/animationrate.json',
+              size: 30.0,
+            ),
+            title: Text('Rate Us', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () async {
               Navigator.pop(context);
               _showRatingDialog(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.share, color: Color(0xFF06607B)),
+            leading:LottieIcon(
+              animationAsset: 'assets/icons/animationshare.json',
+              size: 25.0,
+            ),
             title: Text('Share App', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () {
               _shareApp();
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout_rounded, color: Color(0xFF06607B)),
+            // leading:LottieIcon(
+            //   animationAsset: 'assets/icons/animationsignout.json',
+            //   size: 30.0,
+            // ),
+            leading: Icon(Icons.logout, color: Colors.black),
             title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () => _showSignOutDialog(context),
           ),
           ListTile(
-            leading: Icon(Icons.delete_forever, color: Color(0xFF06607B)),
+            //
+            leading: Icon(Icons.delete, color: Colors.black),
             title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
             onTap: () => _showDeleteAccountDialog(context),
           ),

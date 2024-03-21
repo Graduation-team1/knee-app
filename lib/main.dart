@@ -62,7 +62,8 @@ class _MyAppState extends State<MyApp> {
             '/help': (context) => Help(),
             '/rating': (context) => RatingPage(),
             '/exercise': (context) => ExercisePage(),
-            '/xray':(context) => XRaysPage()
+            '/xray':(context) => XRaysPage(),
+            '/osteroNutrition':(context) => OsteoarthritisPage(),
           },
           debugShowCheckedModeBanner: false,
           home: StreamBuilder<User?>(
@@ -77,28 +78,6 @@ class _MyAppState extends State<MyApp> {
           ),
         );
       }),
-    );
-    return MaterialApp(
-      title: "Knee Osteoarthritis App",
-      theme: ThemeData(
-        brightness: Brightness.dark,
-      ),
-      routes: {
-        '/help': (context) => Help(),
-        '/rating': (context) => RatingPage(),
-        '/exercise': (context) => ExercisePage(),
-      },
-      debugShowCheckedModeBanner: false,
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SplashScreen();
-          } else {
-            return _buildHomePage(snapshot.data);
-          }
-        },
-      ),
     );
   }
 

@@ -147,10 +147,14 @@ import 'package:knee_app/chat.dart';
 import 'package:knee_app/constants.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
+import 'package:knee_app/osteroNutrition.dart';
 import 'package:knee_app/pages/home_page.dart';
 import 'package:knee_app/radiology.dart';
 import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/x_rays_page.dart';
+import 'package:lottie/lottie.dart';
+
+import 'lottie.dart';
 
 class BottomNavBar extends StatefulWidget {
   static final GlobalKey<_BottomNavBarState> navKey =
@@ -230,26 +234,40 @@ class _BottomNavBarState extends State<BottomNavBar> {
           iconSize: 25,
           selectedFontSize: 13,
           unselectedFontSize: 13,
-          backgroundColor: Colors.transparent, // Set transparent background
-          selectedItemColor: Color(0xFF06607B),
-          unselectedItemColor: Color(0xFF06607B),
+          backgroundColor: Colors.transparent,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.black,
+
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.document_scanner_outlined),
-              label: 'X-Ray',
+              icon: LottieIcon(
+                animationAsset: 'assets/icons/animationhome.json',
+                size: 40.0,
+              ),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.chat_outlined),
-              label: 'Chat',
+              icon: LottieIcon(
+                animationAsset: 'assets/icons/animationchat.json',
+                size: 40.0,
+              ),
+              label: 'AI Assistant',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
+              icon: LottieIcon(
+                animationAsset: 'assets/icons/animationhistory.json',
+                size: 30.0,
+              ),
               label: 'Radiology',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notification_add),
+              icon: LottieIcon(
+                animationAsset: 'assets/icons/animationbell.json',
+                size: 40.0,
+              ),
               label: 'Reminder',
             ),
+
           ],
         ),
       )
@@ -273,6 +291,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   _selectedIndex = -1;
                   _showBottomNavBar = true; // Show the bottom nav bar
                   return ExercisePage();
+                case '/osteroNutrition':
+                  _selectedIndex = -1;
+                  _showBottomNavBar = true; // Show the bottom nav bar
+                  return OsteoarthritisPage();
                 default:
                   return screens[_selectedIndex];
               }
