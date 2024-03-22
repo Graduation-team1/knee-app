@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/forget_password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:knee_app/bottomNavbar.dart';
@@ -28,13 +29,13 @@ class _SignInPageState extends State<SignInPage> {
           'Knee Osteoarthritis Detection and \nPrediction.',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
         elevation: 0,
       ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            color: Color(0xFF06607B),
+            color: kScaffoldColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -52,8 +53,8 @@ class _SignInPageState extends State<SignInPage> {
                       ElevatedButton(
                         onPressed: () => _handleSignIn(context),
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Color(0xFF06607B),
-                          backgroundColor: Color(0xFFF0F8FF),
+                          foregroundColor: kScaffoldColor,
+                          backgroundColor: kPrimaryColor,
                           minimumSize: Size(double.infinity, 50),
                         ),
                         child: Center(
@@ -82,7 +83,7 @@ class _SignInPageState extends State<SignInPage> {
                               'Forget your password?',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xFFF0F8FF),
+                                color: kPrimaryColor,
                               ),
                             ),
                           ),
@@ -110,7 +111,7 @@ class _SignInPageState extends State<SignInPage> {
                                   TextSpan(
                                     text: 'Sign Up',
                                     style: TextStyle(
-                                        color: Color(0xFFF0F8FF)),
+                                        color: kPrimaryColor),
                                   ),
                                 ],
                               ),
@@ -136,20 +137,20 @@ class _SignInPageState extends State<SignInPage> {
       children: [
         Text(
           labelText,
-          style: TextStyle(fontSize: 16, color: Color(0xFFF0F8FF)),
+          style: TextStyle(fontSize: 16, color: kPrimaryColor),
         ),
         SizedBox(height: 8),
         TextFormField(
           controller: controller,
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -172,20 +173,20 @@ class _SignInPageState extends State<SignInPage> {
       children: [
         Text(
           'Password',
-          style: TextStyle(fontSize: 16, color: Color(0xFFF0F8FF)),
+          style: TextStyle(fontSize: 16, color: kPrimaryColor),
         ),
         SizedBox(height: 8),
         TextFormField(
           controller: _passwordController,
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -197,7 +198,7 @@ class _SignInPageState extends State<SignInPage> {
               },
               child: Icon(
                 _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Color(0xFFF0F8FF),
+                color: kPrimaryColor,
               ),
             ),
           ),
@@ -229,8 +230,8 @@ class _SignInPageState extends State<SignInPage> {
       } on FirebaseAuthException catch (e) {
         Fluttertoast.showToast(
           msg: 'Incorrect username or password.',
-          backgroundColor: Color(0xFFF0F8FF),
-          textColor: Color(0xFF054E65),
+          backgroundColor: kPrimaryColor,
+          textColor: kScaffoldColor,
         );
       }
     }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/navbar.dart';
 import 'package:knee_app/database.dart'; // Import your database helper
 
@@ -24,12 +25,12 @@ class _XRaysPageState extends State<XRaysPage> {
       appBar: AppBar(
         title: Text(
           'X-Rays',
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
         ),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
       ),
       body: Container(
-        color: Color(0xFF06607B),
+        color: kScaffoldColor,
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -51,7 +52,7 @@ class _XRaysPageState extends State<XRaysPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.image, color: Color(0xFFF0F8FF)),
+                      icon: Icon(Icons.image, color: kPrimaryColor),
                       onPressed: () async {
                         String? chosenImagePath = await getImagePath();
                         if (chosenImagePath != null) {
@@ -69,25 +70,25 @@ class _XRaysPageState extends State<XRaysPage> {
                         controller: _userInputController,
                         decoration: InputDecoration(
                           hintText: 'Type a name...',
-                          hintStyle: TextStyle(color: Color(0xFF06607B)),
+                          hintStyle: TextStyle(color: kScaffoldColor),
                           filled: true,
-                          fillColor: Color(0xFFF0F8FF),
+                          fillColor: kPrimaryColor,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: BorderSide(
-                                color: Color(0xFFF0F8FF)), // Color when not focused
+                                color: kPrimaryColor), // Color when not focused
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: BorderSide(
-                                color: Color(0xFF06607B)), // Color when focused
+                                color: kScaffoldColor), // Color when focused
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 16.0, horizontal: 16.0),
                         ),
-                        cursorColor: Color(0xFF06607B), // Color of the cursor
+                        cursorColor: kScaffoldColor, // Color of the cursor
                         style: TextStyle(
-                          color: Color(0xFF06607B), // Color of the text
+                          color: kScaffoldColor, // Color of the text
                         ),
                       ),
                     ),
@@ -99,7 +100,7 @@ class _XRaysPageState extends State<XRaysPage> {
                   child: Text(
                     '${formatMachineResponse(machineResponse!)}',
                     style: TextStyle(
-                      color: Color(0xFFF0F8FF),
+                      color: kPrimaryColor,
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1,
@@ -131,8 +132,8 @@ class _XRaysPageState extends State<XRaysPage> {
           }
         },
         tooltip: 'Predict',
-        child: Icon(Icons.send, color: Color(0xFF06607B)),
-        backgroundColor: Color(0xFFF0F8FF),
+        child: Icon(Icons.send, color: kScaffoldColor),
+        backgroundColor: kPrimaryColor,
         splashColor: Color(0x98021E3D), // Set your desired splash color
       ),
 

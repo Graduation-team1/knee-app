@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knee_app/constants.dart';
 
 class OsteoarthritisPage extends StatefulWidget {
   @override
@@ -11,10 +12,10 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF06607B), // Set background color for the screen
+      backgroundColor: kScaffoldColor, // Set background color for the screen
       appBar: AppBar(
         title: Text('Osteoarthritis Nutrition'),
-        backgroundColor: Color(0xFF06607B), // Set background color for the AppBar
+        backgroundColor: kScaffoldColor, // Set background color for the AppBar
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -27,7 +28,7 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Set text color for the title
+                  color: kPrimaryColor, // Set text color for the title
                 ),
               ),
             ),
@@ -52,7 +53,7 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
-              color: Colors.white, // Text color for the label
+              color: kPrimaryColor, // Text color for the label
             ),
           ),
           SizedBox(height: 8.0),
@@ -60,7 +61,7 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
             width: double.infinity, // Make the dropdown take full width
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
-              color: Color(0xFFF0F8FF), // Background color for the dropdown button
+              color: kPrimaryColor, // Background color for the dropdown button
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,15 +79,15 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
                     child: Text(
                       value,
                       style: TextStyle(
-                        color: Color(0xFF06607B), // Text color for the dropdown item
+                        color: kScaffoldColor, // Text color for the dropdown item
                       ),
                     ),
                   );
                 }).toList(),
                 style: TextStyle(
-                  color: Color(0xFF06607B), // Text color for the selected item
+                  color: kScaffoldColor, // Text color for the selected item
                 ),
-                dropdownColor: Color(0xFFF0F8FF), // Background color for the dropdown list
+                dropdownColor: kPrimaryColor, // Background color for the dropdown list
               ),
             ),
           ),
@@ -127,20 +128,20 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
 
     switch (_selectedType) {
       case 'Healthy':
-        backgroundColor = Color(0xFFF0F8FF); // Set background color for Healthy advice
-        textColor = Color(0xFF06607B); // Set text color for Healthy advice
+        backgroundColor = kPrimaryColor; // Set background color for Healthy advice
+        textColor = kScaffoldColor; // Set text color for Healthy advice
         break;
       case 'Moderate':
-        backgroundColor = Color(0xFFF0F8FF); // Set background color for Moderate advice
-        textColor = Color(0xFF06607B); // Set text color for Moderate advice
+        backgroundColor = kPrimaryColor; // Set background color for Moderate advice
+        textColor = kScaffoldColor; // Set text color for Moderate advice
         break;
       case 'Severe':
-        backgroundColor = Color(0xFFF0F8FF); // Set background color for Severe advice
-        textColor = Color(0xFF06607B); // Set text color for Severe advice
+        backgroundColor = kPrimaryColor; // Set background color for Severe advice
+        textColor = kScaffoldColor; // Set text color for Severe advice
         break;
       default:
-        backgroundColor = Color(0xFFF0F8FF); // Default background color
-        textColor = Color(0xFF06607B); // Default text color
+        backgroundColor = kPrimaryColor; // Default background color
+        textColor = kScaffoldColor; // Default text color
     }
 
     return Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/rating_bar.dart';
 import 'package:knee_app/splash_screen.dart';
 import 'package:knee_app/x_rays_page.dart';
@@ -57,9 +58,9 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text(
           "AI Assistant",
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
         ),
-        backgroundColor: const Color(0xFF06607B),
+        backgroundColor:  kScaffoldColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -71,13 +72,13 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         ),
       ),
       body: Container(
-          color: const Color(0xFFF0F8FF),
+          color:  kPrimaryColor,
           child: Column(
             children: [
               Expanded(child: MessagesScreen(messages: messages)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                color: const Color(0xFF06607B),
+                color:  kScaffoldColor,
                 child: Row(
                   children: [
                     Expanded(
@@ -92,7 +93,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
                         _controller.clear();
                       },
                       icon: const Icon(Icons.send),
-                      color: const Color(0xFFF0F8FF),
+                      color: kPrimaryColor,
                     ),
                   ],
                 ),

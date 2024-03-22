@@ -201,7 +201,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: BottomNavBar.navKey,
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       bottomNavigationBar: _showBottomNavBar
           ? Theme(
         data: Theme.of(context).copyWith(

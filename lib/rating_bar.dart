@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:knee_app/constants.dart';
 
 import 'navbar.dart';
 
@@ -7,7 +8,7 @@ class RatingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
@@ -17,7 +18,7 @@ class RatingPage extends StatelessWidget {
       elevation: 0,
     ),
       // drawer: NavBar(),
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -28,13 +29,13 @@ class RatingPage extends StatelessWidget {
                // Adjust the spacing as needed
               Text(
                 'Thank you for using the Application.',
-                style: TextStyle(fontSize: 28, color: Color(0xFFF0F8FF)),
+                style: TextStyle(fontSize: 28, color: kPrimaryColor),
                 textAlign: TextAlign.left,
               ),
               SizedBox(height: 80),
               Text(
                 'Percentage of Application users',
-                style: TextStyle(fontSize: 20, color: Color(0xFFF0F8FF)),
+                style: TextStyle(fontSize: 20, color: kPrimaryColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 50),
@@ -43,7 +44,7 @@ class RatingPage extends StatelessWidget {
               SizedBox(height: 40),
               Text(
                 'How would you rate our app?',
-                style: TextStyle(fontSize: 20, color: Color(0xFFF0F8FF)),
+                style: TextStyle(fontSize: 20, color: kPrimaryColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
@@ -70,7 +71,7 @@ class RatingPage extends StatelessWidget {
                   // Handle the submission or navigation logic
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Color(0xFF435C59), backgroundColor: Color(0xFFF0F8FF),
+                  foregroundColor: Color(0xFF435C59), backgroundColor: kPrimaryColor,
                   minimumSize: Size(double.infinity, 50),
                 ),
                 child: Text(
@@ -109,7 +110,7 @@ class CircularProgressIndicatorWidget extends StatelessWidget {
           ),
           Text(
             '$percentage%',
-            style: TextStyle(fontSize: 30, color: Color(0xFFF0F8FF)),
+            style: TextStyle(fontSize: 30, color: kPrimaryColor),
           ),
         ],
       ),

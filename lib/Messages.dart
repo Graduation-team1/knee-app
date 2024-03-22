@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knee_app/constants.dart';
 
 class MessagesScreen extends StatefulWidget {
   final List messages;
@@ -36,7 +37,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     ),
                   ),
                   color: widget.messages[index]['isUserMessage']
-                      ? Color(0xFF06607B) // Change to the user message color
+                      ? kScaffoldColor // Change to the user message color
                       : Color(0xFFE1E8F3), // Change to the assistant message color
                 ),
                 constraints: BoxConstraints(maxWidth: w * 2 / 3),
@@ -44,8 +45,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   widget.messages[index]['message'].text.text[0],
                   style: TextStyle(
                     color: widget.messages[index]['isUserMessage']
-                        ? Color(0xFFF0F8FF) // Change to the user message text color
-                        : Color(0xFF06607B), // Change to the assistant message text color
+                        ? kPrimaryColor // Change to the user message text color
+                        : kScaffoldColor, // Change to the assistant message text color
                   ),
                 ),
               ),

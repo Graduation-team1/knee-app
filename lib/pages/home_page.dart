@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: Color(0xFF06607B), // Set background color to #06607B
+        color: kScaffoldColor, // Set background color to #06607B
         child: Padding(
           padding: EdgeInsets.all(2.h),
           child: Column(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/lottie.dart';
@@ -81,7 +82,7 @@ class _NavBarState extends State<NavBar> {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.grey,
-        textColor: Colors.white,
+        textColor: kPrimaryColor,
       );
     }
   }
@@ -105,7 +106,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color(0xFFF0F8FF),
+      backgroundColor: kPrimaryColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -120,7 +121,7 @@ class _NavBarState extends State<NavBar> {
                 Positioned(
                   child: IconButton(
                     onPressed: selectImage,
-                    icon: Icon(Icons.add_a_photo, color: Color(0xFFF0F8FF), size: 19,),
+                    icon: Icon(Icons.add_a_photo, color: kPrimaryColor, size: 19,),
                   ),
                   bottom: -15,
                   left: 33,
@@ -145,7 +146,7 @@ class _NavBarState extends State<NavBar> {
               animationAsset: 'assets/icons/animationnuitrition.json',
               size: 30.0,
             ),
-            title: Text('Nutrition', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Nutrition', style: TextStyle(color: kScaffoldColor)),
             onTap: () async {
               Navigator.pop(context);
               Navigator.pushNamed(context,'/osteroNutrition');
@@ -156,7 +157,7 @@ class _NavBarState extends State<NavBar> {
               animationAsset: 'assets/icons/animationexe.json',
               size: 30.0,
             ),
-            title: Text('Exercises', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Exercises', style: TextStyle(color: kScaffoldColor)),
             onTap: () async {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/exercise');
@@ -167,7 +168,7 @@ class _NavBarState extends State<NavBar> {
               animationAsset: 'assets/icons/animationhelp.json',
               size: 25.0,
             ),
-            title: Text('Help', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Help', style: TextStyle(color: kScaffoldColor)),
             onTap: () async {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/help');
@@ -178,7 +179,7 @@ class _NavBarState extends State<NavBar> {
               animationAsset: 'assets/icons/animationrate.json',
               size: 30.0,
             ),
-            title: Text('Rate Us', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Rate Us', style: TextStyle(color: kScaffoldColor)),
             onTap: () async {
               Navigator.pop(context);
               _showRatingDialog(context);
@@ -189,7 +190,7 @@ class _NavBarState extends State<NavBar> {
               animationAsset: 'assets/icons/animationshare.json',
               size: 25.0,
             ),
-            title: Text('Share App', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Share App', style: TextStyle(color: kScaffoldColor)),
             onTap: () {
               _shareApp();
             },
@@ -200,13 +201,13 @@ class _NavBarState extends State<NavBar> {
             //   size: 30.0,
             // ),
             leading: Icon(Icons.logout, color: Colors.black),
-            title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Sign Out', style: TextStyle(color: kScaffoldColor)),
             onTap: () => _showSignOutDialog(context),
           ),
           ListTile(
             //
             leading: Icon(Icons.delete, color: Colors.black),
-            title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
+            title: Text('Delete Account', style: TextStyle(color: kScaffoldColor)),
             onTap: () => _showDeleteAccountDialog(context),
           ),
         ],
@@ -219,15 +220,15 @@ class _NavBarState extends State<NavBar> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text('Sign Out', style: TextStyle(color: Color(0xFF06607B))),
-          content: Text('Are you sure you want to sign out?', style: TextStyle(color: Color(0xFF06607B))),
+          backgroundColor: kPrimaryColor,
+          title: Text('Sign Out', style: TextStyle(color: kScaffoldColor)),
+          content: Text('Are you sure you want to sign out?', style: TextStyle(color: kScaffoldColor)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Cancel', style: TextStyle(color: kScaffoldColor)),
             ),
             TextButton(
               onPressed: () async {
@@ -236,7 +237,7 @@ class _NavBarState extends State<NavBar> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
               },
-              child: Text('Yes', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Yes', style: TextStyle(color: kScaffoldColor)),
             ),
           ],
         );
@@ -265,15 +266,15 @@ class _NavBarState extends State<NavBar> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text('Delete Account', style: TextStyle(color: Color(0xFF06607B))),
-          content: Text('Are you sure you want to delete your account? This action is irreversible.', style: TextStyle(color: Color(0xFF06607B))),
+          backgroundColor: kPrimaryColor,
+          title: Text('Delete Account', style: TextStyle(color: kScaffoldColor)),
+          content: Text('Are you sure you want to delete your account? This action is irreversible.', style: TextStyle(color: kScaffoldColor)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Cancel', style: TextStyle(color: kScaffoldColor)),
             ),
             TextButton(
               onPressed: () async {
@@ -288,7 +289,7 @@ class _NavBarState extends State<NavBar> {
                   MaterialPageRoute(builder: (context) => SignUpPage()),
                 );
               },
-              child: Text('Delete', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Delete', style: TextStyle(color: kScaffoldColor)),
             ),
           ],
         );
@@ -324,7 +325,7 @@ class _NavBarState extends State<NavBar> {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.grey,
-        textColor: Colors.white,
+        textColor: kPrimaryColor,
       );
     }
   }
@@ -335,8 +336,8 @@ class _NavBarState extends State<NavBar> {
       builder: (BuildContext context) {
         double rating = 0;
         return AlertDialog(
-          backgroundColor: Color(0xFFF0F8FF),
-          title: Text('Rate Us', style: TextStyle(color: Color(0xFF06607B))),
+          backgroundColor: kPrimaryColor,
+          title: Text('Rate Us', style: TextStyle(color: kScaffoldColor)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -346,10 +347,11 @@ class _NavBarState extends State<NavBar> {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
+                unratedColor: Color(0xFFB0B9BD),
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
-                  color: Color(0xFF06607B),
+                  color: kScaffoldColor,
                 ),
                 onRatingUpdate: (newRating) {
                   rating = newRating;
@@ -358,7 +360,7 @@ class _NavBarState extends State<NavBar> {
               SizedBox(height: 10),
               Text(
                 'Please rate our app',
-                style: TextStyle(color: Color(0xFF06607B)),
+                style: TextStyle(color: kScaffoldColor),
               ),
             ],
           ),
@@ -367,7 +369,7 @@ class _NavBarState extends State<NavBar> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Cancel', style: TextStyle(color: kScaffoldColor)),
             ),
             TextButton(
               onPressed: () {
@@ -391,11 +393,11 @@ class _NavBarState extends State<NavBar> {
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
-                  backgroundColor: Color(0xFFF0F8FF),
-                  textColor:  Color(0xFF06607B),
+                  backgroundColor: kPrimaryColor,
+                  textColor:  kScaffoldColor,
                 );
               },
-              child: Text('Submit', style: TextStyle(color: Color(0xFF06607B))),
+              child: Text('Submit', style: TextStyle(color: kScaffoldColor)),
             ),
           ],
         );

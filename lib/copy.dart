@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:knee_app/constants.dart';
 
 class XRaysPage extends StatefulWidget {
   @override
@@ -18,12 +19,12 @@ class _XRaysPageState extends State<XRaysPage> {
       appBar: AppBar(
         title: Text(
           'X-Rays',
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
         ),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
       ),
       body: Container(
-        color: Color(0xFF06607B), // Background color of the body
+        color: kScaffoldColor, // Background color of the body
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +43,7 @@ class _XRaysPageState extends State<XRaysPage> {
               ),
               SizedBox(height: 20),
               IconButton(
-                icon: Icon(Icons.image , color: Color(0xFFF0F8FF)),
+                icon: Icon(Icons.image , color: kPrimaryColor),
                 onPressed: () async {
                   String? chosenImagePath = await getImagePath();
                   if (chosenImagePath != null) {
@@ -58,7 +59,7 @@ class _XRaysPageState extends State<XRaysPage> {
               machineResponse != null
                   ? Text(
                 'Machine Response: $machineResponse',
-                style: TextStyle(color: Color(0xFFF0F8FF),
+                style: TextStyle(color: kPrimaryColor,
                     fontSize: 20),
               )
                   : Container(),

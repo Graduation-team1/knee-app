@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knee_app/constants.dart';
 import 'navbar.dart';
 
 class ExercisePage extends StatelessWidget {
@@ -21,7 +22,7 @@ class ExercisePage extends StatelessWidget {
     return Scaffold(
       // drawer: NavBar(),
       appBar: AppBar(
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
         title: Text('Exercises'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -31,12 +32,12 @@ class ExercisePage extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       body: ListView.builder(
         itemCount: exercises.length,
         itemBuilder: (context, index) {
           return Card(
-            color: Color(0xFFF0F8FF),
+            color: kPrimaryColor,
             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 16),
             child: ListTile(
               title: Row(
@@ -52,7 +53,7 @@ class ExercisePage extends StatelessWidget {
                   SizedBox(width: 16),
                   Text(
                     exercises[index],
-                    style: TextStyle(fontSize: 18, color: Color(0xFF06607B)),
+                    style: TextStyle(fontSize: 18, color: kScaffoldColor),
                   ),
                 ],
               ),
@@ -149,9 +150,9 @@ class ExerciseDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(exerciseName),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
       ),
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -169,7 +170,7 @@ class ExerciseDetailsPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Text(
                   exerciseDetails.description,
-                  style: TextStyle(fontSize: 18, color: Color(0xFFF0F8FF)),
+                  style: TextStyle(fontSize: 18, color: kPrimaryColor),
                 ),
               ),
             ),

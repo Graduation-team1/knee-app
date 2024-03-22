@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/navbar.dart';
 import 'package:knee_app/database.dart'; // Import your database helper
 
@@ -36,9 +37,9 @@ class _RadiologyPageState extends State<RadiologyPage> {
       drawer: NavBar(),
       appBar: AppBar(
         title: Text('Radiology'),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
       ),
-      backgroundColor: Color(0xFF06607B),
+      backgroundColor: kScaffoldColor,
       body: Column(
         children: [
           Padding(
@@ -82,7 +83,7 @@ class _RadiologyPageState extends State<RadiologyPage> {
                 itemCount: _filteredHistory.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
-                    color: Color(0xFFF0F8FF),
+                    color: kPrimaryColor,
                     child: ListTile(
                       title: Row(
                         children: [
@@ -103,11 +104,11 @@ class _RadiologyPageState extends State<RadiologyPage> {
                             children: [
                               Text(
                                 'Name: ${_filteredHistory[index]['userInput']}',
-                                style: TextStyle(color: Color(0xFF06607B)),
+                                style: TextStyle(color: kScaffoldColor),
                               ),
                               Text(
                                 formatMachineResponse(_filteredHistory[index]['machineResponse']),
-                                style: TextStyle(color: Color(0xFF06607B)),
+                                style: TextStyle(color: kScaffoldColor),
                               ),
                             ],
                           ),

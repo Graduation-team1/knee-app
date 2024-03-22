@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/sign_up_page.dart';
 import 'package:lottie/lottie.dart';
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF06607B), // Set the background color
+      backgroundColor:  kScaffoldColor, // Set the background color
       body: Container(
         child: Center(
           child: SingleChildScrollView(
@@ -70,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 const Text(
                   'Welcome to \nKnee Osteoarthritis \nDetection and Prediction.',
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 28, color: Color(0xFFF0F8FF)), // Set text color to F0F8FF
+                  style: TextStyle(fontSize: 28, color: kPrimaryColor), // Set text color to F0F8FF
                 ),
               ],
             ),

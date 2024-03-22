@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/constants.dart';
 import 'package:knee_app/databaseHelperforProfile.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
@@ -31,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
           'Knee Osteoarthritis Detection and \nPrediction.',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Color(0xFF06607B),
+        backgroundColor: kScaffoldColor,
         elevation: 0,
       ),
       body: SafeArea(
@@ -39,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xFF06607B),
+            color: kScaffoldColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -62,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ElevatedButton(
                         onPressed: () => _handleSignUp(context),
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Color(0xFF435C59), backgroundColor: Color(0xFFF0F8FF),
+                          foregroundColor: Color(0xFF435C59), backgroundColor: kPrimaryColor,
                           minimumSize: Size(double.infinity, 50),
                         ),
                         child: Text(
@@ -88,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text: 'Login',
-                                  style: TextStyle(color: Color(0xFFF0F8FF)),
+                                  style: TextStyle(color: kPrimaryColor),
                                 ),
                               ],
                             ),
@@ -115,20 +116,20 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Text(
           labelText,
-          style: TextStyle(fontSize: 18, color: Color(0xFFF0F8FF)),
+          style: TextStyle(fontSize: 18, color: kPrimaryColor),
         ),
         SizedBox(height: 8),
         TextFormField(
           controller: controller,
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -153,20 +154,20 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Text(
           'Password',
-          style: TextStyle(fontSize: 18, color: Color(0xFFF0F8FF)),
+          style: TextStyle(fontSize: 18, color: kPrimaryColor),
         ),
         SizedBox(height: 8),
         TextFormField(
           controller: _passwordController,
-          style: TextStyle(color: Color(0xFFF0F8FF)),
+          style: TextStyle(color: kPrimaryColor),
           decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                  color: Color(0xFFF0F8FF), style: BorderStyle.solid),
+                  color: kPrimaryColor, style: BorderStyle.solid),
             ),
             filled: true,
             fillColor: Colors.transparent,
@@ -178,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               child: Icon(
                 _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Color(0xFFF0F8FF),
+                color: kPrimaryColor,
               ),
             ),
           ),
@@ -203,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Fluttertoast.showToast(
           msg: 'Please use a Gmail email address.',
           backgroundColor: Color(0xFFF0F8FF),
-          textColor: Color(0xFF054E65),
+          textColor: kScaffoldColor,
         );
         return;
       }
@@ -229,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Fluttertoast.showToast(
           msg: 'You have successfully signed up!',
           backgroundColor: Color(0xFFF0F8FF),
-          textColor: Color(0xFF054E65),
+          textColor: kScaffoldColor,
         );
 
         Future.delayed(Duration(seconds: 2), () {
@@ -244,20 +245,20 @@ class _SignUpPageState extends State<SignUpPage> {
           Fluttertoast.showToast(
             msg: 'Weak Password Please enter a Strong Password.',
             backgroundColor: Color(0xFFF0F8FF),
-            textColor: Color(0xFF054E65),
+            textColor: kScaffoldColor,
           );
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
           Fluttertoast.showToast(
             msg: 'The account already exists for that email.',
             backgroundColor: Color(0xFFF0F8FF),
-            textColor: Color(0xFF054E65),
+            textColor: kScaffoldColor,
           );
         } else if (e.code == 'invalid-email') {
           Fluttertoast.showToast(
             msg: 'Invalid Email Please enter a valid email address.',
             backgroundColor: Color(0xFFF0F8FF),
-            textColor: Color(0xFF054E65),
+            textColor: kScaffoldColor,
           );
         }
       } catch (e) {
