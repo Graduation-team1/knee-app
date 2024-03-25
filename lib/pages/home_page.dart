@@ -68,17 +68,18 @@ class HomePage extends StatelessWidget {
           height: 9.h,
           child: Card(
             color: kPrimaryColor,
-            elevation: 7,
-            shadowColor: Color(0xFFAAAAE6),
-            shape: CircleBorder(eccentricity: 0),
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(3.h),
+            ),
             child: Icon(
               Icons.add_outlined,
               color: kScaffoldColor,
-              size: 40.sp,
+              size: 50.sp,
             ),
           ),
         ),
       ),
+
     );
   }
 }
