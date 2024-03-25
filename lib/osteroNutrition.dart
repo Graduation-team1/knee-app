@@ -61,11 +61,14 @@ class _OsteoarthritisPageState extends State<OsteoarthritisPage> {
             width: double.infinity, // Make the dropdown take full width
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
-              color: kPrimaryColor, // Background color for the dropdown button
+              color: kPrimaryColor,
+              // Background color for the dropdown button
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: DropdownButton<String>(
+                iconDisabledColor: Colors.black,
+                iconEnabledColor: Colors.black,
                 value: _selectedType,
                 onChanged: (String? newValue) {
                   setState(() {

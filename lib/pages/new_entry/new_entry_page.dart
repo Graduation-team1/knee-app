@@ -169,7 +169,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   ),
                   child: SizedBox(
                     width: 80.w,
-                    height: 8.h,
+                    height: 6.7.h,
                     child: TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: kPrimaryColor,
@@ -384,7 +384,6 @@ class _SelectTimeState extends State<SelectTime> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _time,
-      cancelText: 'Cancel', // Custom cancel button text
 
     );
 

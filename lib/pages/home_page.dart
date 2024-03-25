@@ -68,9 +68,9 @@ class HomePage extends StatelessWidget {
           height: 9.h,
           child: Card(
             color: kPrimaryColor,
-            shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.circular(2.5.h),
-            ),
+            elevation: 7,
+            shadowColor: Color(0xFFAAAAE6),
+            shape: CircleBorder(eccentricity: 0),
             child: Icon(
               Icons.add_outlined,
               color: kScaffoldColor,
