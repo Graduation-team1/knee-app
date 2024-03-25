@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:knee_app/bottomNavbar.dart';
 import 'package:knee_app/constants.dart';
 import 'package:knee_app/navbar.dart';
-import 'package:knee_app/database.dart'; // Import your database helper
+import 'package:knee_app/database.dart';
 
 class RadiologyPage extends StatefulWidget {
   @override

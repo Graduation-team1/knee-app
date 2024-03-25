@@ -63,7 +63,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       ElevatedButton(
                         onPressed: () => _handleSignUp(context),
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Color(0xFF435C59), backgroundColor: kPrimaryColor,
+                          foregroundColor: Color(0xFF435C59),
+                          backgroundColor: kPrimaryColor,
                           minimumSize: Size(double.infinity, 50),
                         ),
                         child: Text(

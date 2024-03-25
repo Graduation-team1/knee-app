@@ -12,6 +12,7 @@ import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'constants.dart';
 import 'splash_screen.dart';
 import 'sign_up_page.dart';
 import 'chat.dart';
@@ -57,9 +58,20 @@ class _MyAppState extends State<MyApp> {
           title: "Knee Osteoarthritis App",
           theme: ThemeData(
             brightness: Brightness.dark,
+            timePickerTheme: const TimePickerThemeData(
+              backgroundColor: kScaffoldColor,
+              dialBackgroundColor: kPrimaryColor,
+              hourMinuteTextColor:Colors.black,
+              hourMinuteColor: kPrimaryColor,
+              dayPeriodColor:Color(0xFFAAAAE6),
+              dayPeriodTextColor: Colors.black,
+              dialHandColor: kScaffoldColor,
+              dialTextColor: Colors.black,
+            ),
           ),
+
           routes: {
-            '/help': (context) => Help(),
+            '/help': (context) => const Help(),
             '/rating': (context) => RatingPage(),
             '/exercise': (context) => ExercisePage(),
             '/xray':(context) => XRaysPage(),

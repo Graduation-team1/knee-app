@@ -69,12 +69,12 @@ class HomePage extends StatelessWidget {
           child: Card(
             color: kPrimaryColor,
             shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.circular(3.h),
+              borderRadius: BorderRadius.circular(2.5.h),
             ),
             child: Icon(
               Icons.add_outlined,
               color: kScaffoldColor,
-              size: 50.sp,
+              size: 40.sp,
             ),
           ),
         ),

@@ -143,6 +143,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:knee_app/bottomnavclipper.dart';
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/constants.dart';
 import 'package:knee_app/exercise.dart';
@@ -201,77 +202,81 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: BottomNavBar.navKey,
-      backgroundColor: kScaffoldColor,
       bottomNavigationBar: _showBottomNavBar
           ? Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: kPrimaryColor, // Set bottom navigation bar background color to red
+          canvasColor: Color(0xFFF0F8FF),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              if (_selectedIndex != index) {
-                _selectedIndex = index;
-                _navigatorKey.currentState
-                    ?.popUntil((route) => route.isFirst);
-              }
-              if (index == 1) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Chat()),
-                );
-              }
-              if (index == 3) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              }
-            });
-          },
-          elevation: 0.0,
-          iconSize: 25,
-          selectedFontSize: 13,
-          unselectedFontSize: 13,
-          backgroundColor: Colors.transparent,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black,
-
-          items: const [
-            BottomNavigationBarItem(
-              icon: LottieIcon(
-                animationAsset: 'assets/icons/animationhome.json',
-                size: 40.0,
+        child: Expanded(
+          child: Container(
+            height: 65,
+            child: ClipPath(
+              clipper: BottomNavBarClipper(),
+              child: BottomNavigationBar(
+                currentIndex: _selectedIndex,
+                onTap: (index) {
+                  setState(() {
+                    if (_selectedIndex != index) {
+                      _selectedIndex = index;
+                      _navigatorKey.currentState
+                          ?.popUntil((route) => route.isFirst);
+                    }
+                    if (index == 1) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Chat()),
+                      );
+                    }
+                    if (index == 3) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    }
+                  });
+                },
+                elevation: 0.0,
+                selectedFontSize: 12,
+                unselectedFontSize: 12,
+                selectedItemColor: Colors.black,
+                unselectedItemColor: Colors.black,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: LottieIcon(
+                      animationAsset: 'assets/icons/animationhome.json',
+                      size: 25.0,
+                    ),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: LottieIcon(
+                      animationAsset: 'assets/icons/animationchat.json',
+                      size: 35.0,
+                    ),
+                    label: 'AI Assistant',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: LottieIcon(
+                      animationAsset: 'assets/icons/animationhistory.json',
+                      size: 25.0,
+                    ),
+                    label: 'Radiology',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: LottieIcon(
+                      animationAsset: 'assets/icons/animationbell.json',
+                      size: 35.0,
+                    ),
+                    label: 'Reminder',
+                  ),
+                ],
               ),
-              label: 'Home',
             ),
-            BottomNavigationBarItem(
-              icon: LottieIcon(
-                animationAsset: 'assets/icons/animationchat.json',
-                size: 40.0,
-              ),
-              label: 'AI Assistant',
-            ),
-            BottomNavigationBarItem(
-              icon: LottieIcon(
-                animationAsset: 'assets/icons/animationhistory.json',
-                size: 30.0,
-              ),
-              label: 'Radiology',
-            ),
-            BottomNavigationBarItem(
-              icon: LottieIcon(
-                animationAsset: 'assets/icons/animationbell.json',
-                size: 40.0,
-              ),
-              label: 'Reminder',
-            ),
-
-          ],
+          ),
         ),
       )
           : SizedBox(),
+
       body: Navigator(
         key: _navigatorKey,
         onGenerateRoute: (settings) {

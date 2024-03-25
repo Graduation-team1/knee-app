@@ -64,198 +64,200 @@ class _NewEntryPageState extends State<NewEntryPage> {
         value: _newEntryBloc,
         child: Padding(
           padding: EdgeInsets.all(2.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const PanelTitle(
-                title: 'Medicine Name',
-                isRequired: true,
-                titleColor: kPrimaryColor,
-              ),
-              TextFormField(
-                maxLength: 12,
-                controller: nameController,
-                textCapitalization: TextCapitalization.words,
-                cursorColor: kOtherColor,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kOtherColor), // Set the focused border color here
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const PanelTitle(
+                  title: 'Medicine Name',
+                  isRequired: true,
+                  titleColor: kPrimaryColor,
                 ),
-                style: Theme.of(context).textTheme.subtitle2!.copyWith(color: kOtherColor),
-              ),
-
-              const PanelTitle(
-                title: 'Dosage in mg',
-                isRequired: false,
-                titleColor: kPrimaryColor,
-              ),
-              TextFormField(
-                maxLength: 12,
-                controller: dosageController,
-                textCapitalization: TextCapitalization.words,
-                cursorColor: kOtherColor,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kOtherColor), // Set the focused border color here
-                  ),
-                ),
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2!
-                    .copyWith(color: kOtherColor),
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              const PanelTitle(title: 'Medicine Type', isRequired: false,titleColor: kPrimaryColor,),
-              Padding(
-                padding: EdgeInsets.only(top: 1.h),
-                child: StreamBuilder<MedicineType>(
-                  //new entry block
-                  stream: _newEntryBloc.selectedMedicineType,
-                  builder: (context, snapshot) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //not yet clickable?
-                        MedicineTypeColumn(
-                            medicineType: MedicineType.Bottle,
-                            name: 'Bottle',
-                            iconValue: 'assets/icons/bottle.svg',
-                            isSelected: snapshot.data == MedicineType.Bottle
-                                ? true
-                                : false),
-                        MedicineTypeColumn(
-                            medicineType: MedicineType.Pill,
-                            name: 'Pill',
-                            iconValue: 'assets/icons/pill.svg',
-                            isSelected: snapshot.data == MedicineType.Pill
-                                ? true
-                                : false),
-                        MedicineTypeColumn(
-                            medicineType: MedicineType.Syringe,
-                            name: 'Syringe',
-                            iconValue: 'assets/icons/syringe.svg',
-                            isSelected: snapshot.data == MedicineType.Syringe
-                                ? true
-                                : false),
-                        MedicineTypeColumn(
-                            medicineType: MedicineType.Tablet,
-                            name: 'Tablet',
-                            iconValue: 'assets/icons/tablet.svg',
-                            isSelected: snapshot.data == MedicineType.Tablet
-                                ? true
-                                : false),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const PanelTitle(title: 'Interval Selection', isRequired: true,titleColor: kPrimaryColor,),
-              const IntervalSelection(),
-              const PanelTitle(title: 'Starting Time', isRequired: true,titleColor: kPrimaryColor,),
-              const SelectTime(),
-              SizedBox(
-                height: 2.h,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 8.w,
-                  right: 8.w,
-                ),
-                child: SizedBox(
-                  width: 80.w,
-                  height: 8.h,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: kPrimaryColor,
-                      shape: const StadiumBorder(),
+                TextFormField(
+                  maxLength: 12,
+                  controller: nameController,
+                  textCapitalization: TextCapitalization.words,
+                  cursorColor: kOtherColor,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: kOtherColor), // Set the focused border color here
                     ),
-                    child: Center(
-                      child: Text(
-                        'Confirm',
-                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                              color: kScaffoldColor,
-                            ),
-                      ),
+                  ),
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(color: kOtherColor),
+                ),
+            
+                const PanelTitle(
+                  title: 'Dosage in mg',
+                  isRequired: false,
+                  titleColor: kPrimaryColor,
+                ),
+                TextFormField(
+                  maxLength: 12,
+                  controller: dosageController,
+                  textCapitalization: TextCapitalization.words,
+                  cursorColor: kOtherColor,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: kOtherColor), // Set the focused border color here
                     ),
-                    onPressed: () {
-                      //add medicine
-                      //some validations
-                      //go to success screen
-                      String? medicineName;
-                      int? dosage;
-
-                      //medicineName
-                      if (nameController.text == "") {
-                        _newEntryBloc.submitError(EntryError.nameNull);
-                        return;
-                      }
-                      if (nameController.text != "") {
-                        medicineName = nameController.text;
-                      }
-                      //dosage
-                      if (dosageController.text == "") {
-                        dosage = 0;
-                      }
-                      if (dosageController.text != "") {
-                        dosage = int.parse(dosageController.text);
-                      }
-                      for (var medicine in globalBloc.medicineList$!.value) {
-                        if (medicineName == medicine.medicineName) {
-                          _newEntryBloc.submitError(EntryError.nameDuplicate);
-                          return;
-                        }
-                      }
-                      if (_newEntryBloc.selectIntervals!.value == 0) {
-                        _newEntryBloc.submitError(EntryError.interval);
-                        return;
-                      }
-                      if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
-                        _newEntryBloc.submitError(EntryError.startTime);
-                        return;
-                      }
-
-                      String medicineType = _newEntryBloc
-                          .selectedMedicineType!.value
-                          .toString()
-                          .substring(13);
-
-                      int interval = _newEntryBloc.selectIntervals!.value;
-                      String startTime =
-                          _newEntryBloc.selectedTimeOfDay$!.value;
-
-                      List<int> intIDs =
-                          makeIDs(24 / _newEntryBloc.selectIntervals!.value);
-                      List<String> notificationIDs =
-                          intIDs.map((i) => i.toString()).toList();
-
-                      Medicine newEntryMedicine = Medicine(
-                          notificationIDs: notificationIDs,
-                          medicineName: medicineName,
-                          dosage: dosage,
-                          medicineType: medicineType,
-                          interval: interval,
-                          startTime: startTime);
-
-                      //update medicine list via global bloc
-                      globalBloc.updateMedicineList(newEntryMedicine);
-
-                      //schedule notification
-                      scheduleNotification(newEntryMedicine);
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SuccessScreen()));
+                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(color: kOtherColor),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                const PanelTitle(title: 'Medicine Type', isRequired: false,titleColor: kPrimaryColor,),
+                Padding(
+                  padding: EdgeInsets.only(top: 1.h),
+                  child: StreamBuilder<MedicineType>(
+                    //new entry block
+                    stream: _newEntryBloc.selectedMedicineType,
+                    builder: (context, snapshot) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //not yet clickable?
+                          MedicineTypeColumn(
+                              medicineType: MedicineType.Bottle,
+                              name: 'Bottle',
+                              iconValue: 'assets/icons/bottle.svg',
+                              isSelected: snapshot.data == MedicineType.Bottle
+                                  ? true
+                                  : false),
+                          MedicineTypeColumn(
+                              medicineType: MedicineType.Pill,
+                              name: 'Pill',
+                              iconValue: 'assets/icons/pill.svg',
+                              isSelected: snapshot.data == MedicineType.Pill
+                                  ? true
+                                  : false),
+                          MedicineTypeColumn(
+                              medicineType: MedicineType.Syringe,
+                              name: 'Syringe',
+                              iconValue: 'assets/icons/syringe.svg',
+                              isSelected: snapshot.data == MedicineType.Syringe
+                                  ? true
+                                  : false),
+                          MedicineTypeColumn(
+                              medicineType: MedicineType.Tablet,
+                              name: 'Tablet',
+                              iconValue: 'assets/icons/tablet.svg',
+                              isSelected: snapshot.data == MedicineType.Tablet
+                                  ? true
+                                  : false),
+                        ],
+                      );
                     },
                   ),
                 ),
-              ),
-            ],
+                const PanelTitle(title: 'Interval Selection', isRequired: true,titleColor: kPrimaryColor,),
+                const IntervalSelection(),
+                const PanelTitle(title: 'Starting Time', isRequired: true,titleColor: kPrimaryColor,),
+                const SelectTime(),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 8.w,
+                    right: 8.w,
+                  ),
+                  child: SizedBox(
+                    width: 80.w,
+                    height: 8.h,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: kPrimaryColor,
+                        shape: const StadiumBorder(),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                                color: kScaffoldColor,
+                              ),
+                        ),
+                      ),
+                      onPressed: () {
+                        //add medicine
+                        //some validations
+                        //go to success screen
+                        String? medicineName;
+                        int? dosage;
+            
+                        //medicineName
+                        if (nameController.text == "") {
+                          _newEntryBloc.submitError(EntryError.nameNull);
+                          return;
+                        }
+                        if (nameController.text != "") {
+                          medicineName = nameController.text;
+                        }
+                        //dosage
+                        if (dosageController.text == "") {
+                          dosage = 0;
+                        }
+                        if (dosageController.text != "") {
+                          dosage = int.parse(dosageController.text);
+                        }
+                        for (var medicine in globalBloc.medicineList$!.value) {
+                          if (medicineName == medicine.medicineName) {
+                            _newEntryBloc.submitError(EntryError.nameDuplicate);
+                            return;
+                          }
+                        }
+                        if (_newEntryBloc.selectIntervals!.value == 0) {
+                          _newEntryBloc.submitError(EntryError.interval);
+                          return;
+                        }
+                        if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
+                          _newEntryBloc.submitError(EntryError.startTime);
+                          return;
+                        }
+            
+                        String medicineType = _newEntryBloc
+                            .selectedMedicineType!.value
+                            .toString()
+                            .substring(13);
+            
+                        int interval = _newEntryBloc.selectIntervals!.value;
+                        String startTime =
+                            _newEntryBloc.selectedTimeOfDay$!.value;
+            
+                        List<int> intIDs =
+                            makeIDs(24 / _newEntryBloc.selectIntervals!.value);
+                        List<String> notificationIDs =
+                            intIDs.map((i) => i.toString()).toList();
+            
+                        Medicine newEntryMedicine = Medicine(
+                            notificationIDs: notificationIDs,
+                            medicineName: medicineName,
+                            dosage: dosage,
+                            medicineType: medicineType,
+                            interval: interval,
+                            startTime: startTime);
+            
+                        //update medicine list via global bloc
+                        globalBloc.updateMedicineList(newEntryMedicine);
+            
+                        //schedule notification
+                        scheduleNotification(newEntryMedicine);
+            
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SuccessScreen()));
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -377,24 +379,29 @@ class _SelectTimeState extends State<SelectTime> {
   bool _clicked = false;
 
   Future<TimeOfDay> _selectTime() async {
-    final NewEntryBloc newEntryBloc =
-        Provider.of<NewEntryBloc>(context, listen: false);
+    final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context, listen: false);
 
-    final TimeOfDay? picked =
-        await showTimePicker(context: context, initialTime: _time);
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _time,
+      cancelText: 'Cancel', // Custom cancel button text
+
+    );
 
     if (picked != null && picked != _time) {
       setState(() {
         _time = picked;
         _clicked = true;
 
-        //update state via provider, we will do later
-        newEntryBloc.updateTime(convertTime(_time.hour.toString()) +
-            convertTime(_time.minute.toString()));
+        // Update state via provider, we will do later
+        newEntryBloc.updateTime(
+          convertTime(_time.hour.toString()) + convertTime(_time.minute.toString()),
+        );
       });
     }
     return picked!;
   }
+
 
   @override
   Widget build(BuildContext context) {
