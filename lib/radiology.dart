@@ -5,6 +5,9 @@ import 'package:knee_app/bottomNavbar.dart';
 import 'package:knee_app/constants.dart';
 import 'package:knee_app/navbar.dart';
 import 'package:knee_app/database.dart';
+import 'package:knee_app/report_page.dart';
+
+// import 'report_page.dart'; // Import the ReportPage
 
 class RadiologyPage extends StatefulWidget {
   @override
@@ -82,44 +85,59 @@ class _RadiologyPageState extends State<RadiologyPage> {
               child: ListView.builder(
                 itemCount: _filteredHistory.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    color: kPrimaryColor,
-                    child: ListTile(
-                      title: Row(
-                        children: [
-                          Container(
-                            width: 65,
-                            height: 65,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: FileImage(File(_filteredHistory[index]['imagePath'])),
-                                fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReportPage(
+                            name: _filteredHistory[index]['userInput'],
+                            imagePath: _filteredHistory[index]['imagePath'],
+                            confidence: json.decode(_filteredHistory[index]['machineResponse'])['confidence'],
+                            result: json.decode(_filteredHistory[index]['machineResponse'])['result'],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: kPrimaryColor,
+                      child: ListTile(
+                        title: Row(
+                          children: [
+                            Container(
+                              width: 65,
+                              height: 65,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: FileImage(File(_filteredHistory[index]['imagePath'])),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Name: ${_filteredHistory[index]['userInput']}',
-                                style: TextStyle(color: kScaffoldColor),
-                              ),
-                              Text(
-                                formatMachineResponse(_filteredHistory[index]['machineResponse']),
-                                style: TextStyle(color: kScaffoldColor),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Color(0xFF065972)),
-                            onPressed: () {
-                              deleteHistory(_filteredHistory[index]['_id']);
-                            },
-                          ),
-                        ],
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Name: ${_filteredHistory[index]['userInput']}',
+                                  style: TextStyle(color: kScaffoldColor),
+                                ),
+                                Text(
+                                  formatMachineResponse(_filteredHistory[index]['machineResponse']),
+                                  style: TextStyle(color: kScaffoldColor),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Color(0xFF065972)),
+                              onPressed: () {
+                                deleteHistory(_filteredHistory[index]['_id']);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -157,6 +175,4 @@ class _RadiologyPageState extends State<RadiologyPage> {
       }).toList();
     });
   }
-
-
 }

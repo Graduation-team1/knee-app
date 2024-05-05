@@ -37,12 +37,17 @@ class _XRaysPageState extends State<XRaysPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 imagePath != null
-                    ? Image.file(
-                  File(imagePath!),
-                  height: 200,
-                  width: 200,
-                )
-                    : Image.asset(
+                    ? ClipRRect(
+            borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+            child: Image.file(
+              File(imagePath!),
+              height: 200,
+              width: 200,
+              fit: BoxFit.cover,
+            ),
+          )
+
+          : Image.asset(
                   'assets/bonee.png',
                   height: 200,
                   width: 200,

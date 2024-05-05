@@ -207,8 +207,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         data: Theme.of(context).copyWith(
           canvasColor: Color(0xFFF0F8FF),
         ),
-        child: Expanded(
-          child: Container(
+        child: Container(
             height: 65,
             child: ClipPath(
               clipper: BottomNavBarClipper(),
@@ -273,7 +272,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
             ),
           ),
-        ),
+
       )
           : SizedBox(),
 
