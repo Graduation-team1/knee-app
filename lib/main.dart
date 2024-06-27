@@ -1,18 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_app/bottomNavbar.dart';
+import 'package:knee_app/contacts.dart';
 import 'package:knee_app/exercise.dart';
+import 'package:knee_app/forget_password.dart';
 import 'package:knee_app/global_bloc.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/osteroNutrition.dart';
 import 'package:knee_app/pages/home_page.dart';
+
 import 'package:knee_app/radiology.dart';
 import 'package:knee_app/rating_bar.dart';
+import 'package:knee_app/report_page.dart';
 import 'package:knee_app/sign_in_page.dart';
 import 'package:knee_app/x_rays_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'constants.dart';
+
 import 'splash_screen.dart';
 import 'sign_up_page.dart';
 import 'chat.dart';
@@ -74,9 +79,12 @@ class _MyAppState extends State<MyApp> {
             '/help': (context) => const Help(),
             '/rating': (context) => RatingPage(),
             '/exercise': (context) => ExercisePage(),
-            '/xray':(context) => XRaysPage(),
-            '/osteroNutrition':(context) => OsteoarthritisPage(),
+            '/xray': (context) => XRaysPage(),
+            '/contacts': (context) => ContactUsPage(),
+            '/report':(context)=>ForgotPasswordPage(),
+            '/osteroNutrition': (context) => OsteoarthritisPage(),
           },
+
           debugShowCheckedModeBanner: false,
           home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),

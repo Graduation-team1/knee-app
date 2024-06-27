@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:knee_app/contacts.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/lottie.dart';
@@ -202,6 +203,22 @@ class _NavBarState extends State<NavBar> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.contact_mail_outlined, color: Colors.black, size: 20),
+                      minVerticalPadding: 1,
+                      title: Text(
+                        'Contact Us',
+                        style: TextStyle(color: Color(0xFF06607B), fontSize: 13),
+                      ),
+                      onTap: () {
+                        print('ListTile tapped');
+                        Navigator.pop(context);
+                        print('Drawer closed');
+                        Navigator.pushNamed(context, '/contacts');
+                        print('Navigation to /contacts initiated');
+                      },
+                    ),
+                    Divider(height: 0, color: Colors.grey,indent: 30,endIndent: 30,),
                     ListTile(
                       visualDensity: VisualDensity(vertical: -4),
                       leading: Icon(Icons.logout, color: Colors.black, size: 20),

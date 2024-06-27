@@ -146,6 +146,7 @@ import 'package:flutter/material.dart';
 import 'package:knee_app/bottomnavclipper.dart';
 import 'package:knee_app/chat.dart';
 import 'package:knee_app/constants.dart';
+import 'package:knee_app/contacts.dart';
 import 'package:knee_app/exercise.dart';
 import 'package:knee_app/help.dart';
 import 'package:knee_app/osteroNutrition.dart';
@@ -208,71 +209,70 @@ class _BottomNavBarState extends State<BottomNavBar> {
           canvasColor: Color(0xFFF0F8FF),
         ),
         child: Container(
-            height: 65,
-            child: ClipPath(
-              clipper: BottomNavBarClipper(),
-              child: BottomNavigationBar(
-                currentIndex: _selectedIndex,
-                onTap: (index) {
-                  setState(() {
-                    if (_selectedIndex != index) {
-                      _selectedIndex = index;
-                      _navigatorKey.currentState
-                          ?.popUntil((route) => route.isFirst);
-                    }
-                    if (index == 1) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Chat()),
-                      );
-                    }
-                    if (index == 3) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
-                    }
-                  });
-                },
-                elevation: 0.0,
-                selectedFontSize: 12,
-                unselectedFontSize: 12,
-                selectedItemColor: Colors.black,
-                unselectedItemColor: Colors.black,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: LottieIcon(
-                      animationAsset: 'assets/icons/animationhome.json',
-                      size: 25.0,
-                    ),
-                    label: 'Home',
+          height: 65,
+          child: ClipPath(
+            clipper: BottomNavBarClipper(),
+            child: BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  if (_selectedIndex != index) {
+                    _selectedIndex = index;
+                    _navigatorKey.currentState
+                        ?.popUntil((route) => route.isFirst);
+                  }
+                  if (index == 1) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Chat()),
+                    );
+                  }
+                  if (index == 3) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  }
+                });
+              },
+              elevation: 0.0,
+              selectedFontSize: 12,
+              unselectedFontSize: 12,
+              selectedItemColor: Colors.black,
+              unselectedItemColor: Colors.black,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: LottieIcon(
+                    animationAsset: 'assets/icons/animationhome.json',
+                    size: 25.0,
                   ),
-                  BottomNavigationBarItem(
-                    icon: LottieIcon(
-                      animationAsset: 'assets/icons/animationchat.json',
-                      size: 35.0,
-                    ),
-                    label: 'AI Assistant',
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: LottieIcon(
+                    animationAsset: 'assets/icons/animationchat.json',
+                    size: 35.0,
                   ),
-                  BottomNavigationBarItem(
-                    icon: LottieIcon(
-                      animationAsset: 'assets/icons/animationhistory.json',
-                      size: 25.0,
-                    ),
-                    label: 'Radiology',
+                  label: 'AI Assistant',
+                ),
+                BottomNavigationBarItem(
+                  icon: LottieIcon(
+                    animationAsset: 'assets/icons/animationhistory.json',
+                    size: 25.0,
                   ),
-                  BottomNavigationBarItem(
-                    icon: LottieIcon(
-                      animationAsset: 'assets/icons/animationbell.json',
-                      size: 35.0,
-                    ),
-                    label: 'Reminder',
+                  label: 'Radiology',
+                ),
+                BottomNavigationBarItem(
+                  icon: LottieIcon(
+                    animationAsset: 'assets/icons/animationbell.json',
+                    size: 35.0,
                   ),
-                ],
-              ),
+                  label: 'Reminder',
+                ),
+              ],
             ),
           ),
-
+        ),
       )
           : SizedBox(),
 
@@ -299,6 +299,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   _selectedIndex = -1;
                   _showBottomNavBar = true; // Show the bottom nav bar
                   return OsteoarthritisPage();
+                case '/contacts':
+                  _selectedIndex = -1;
+                  _showBottomNavBar = true; // Show the bottom nav bar
+                  return ContactUsPage();
                 default:
                   return screens[_selectedIndex];
               }
